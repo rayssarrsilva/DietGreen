@@ -1,6 +1,3 @@
-// Camada de DOMÍNIO — tipos puros, sem dependência de Prisma, DB ou Next.
-// Regra SOLID aplicada: domínio não conhece infraestrutura (Dependency Inversion).
-
 export type NutrientCategory =
   | "PROTEIN"
   | "FIBER"
@@ -73,7 +70,7 @@ export interface FoodSubstitution {
   foodId: string;
   dietaryProfileSlug: string;
   replacesCategory: NutrientCategory;
-  efficacyRank: number; // 1 = mais eficaz a curto prazo
+  efficacyRank: number; 
   rationale: string;
 }
 
