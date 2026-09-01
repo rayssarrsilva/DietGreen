@@ -4,10 +4,6 @@ import GitHub from "next-auth/providers/github";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/infrastructure/db/prisma";
 
-// Providers só entram na lista se as credenciais existirem no .env —
-// assim o app funciona mesmo se você configurar só um dos dois (ou nenhum,
-// nesse caso o login fica desabilitado na UI, mas o resto do app funciona
-// sem persistência entre sessões).
 const providers = [];
 if (process.env.AUTH_GOOGLE_ID && process.env.AUTH_GOOGLE_SECRET) {
   providers.push(
