@@ -1,4 +1,4 @@
-# Nutre — cardápio personalizado por perfil alimentar
+# DietGreen — cardápio personalizado por perfil alimentar
 
 App web responsivo que gera cardápios personalizados combinando **perfil
 alimentar** (vegano, vegetariano, lactovegetariano, pescetariano, e mais —

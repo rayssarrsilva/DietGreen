@@ -1,10 +1,6 @@
 import { PrismaClient } from "@prisma/client";
 import { PrismaNeon } from "@prisma/adapter-neon";
 
-// Driver adapter do Neon: usa o driver serverless do Neon (via WebSocket)
-// em vez do engine binário nativo do Prisma. Isso é o setup recomendado
-// para Neon + ambientes serverless/edge, e também evita depender de um
-// binário Rust baixado em build time — só JS/WASM.
 const globalForPrisma = globalThis as unknown as {
   prisma: PrismaClient | undefined;
 };
