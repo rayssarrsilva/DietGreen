@@ -146,10 +146,3 @@ Position Stand on Diets and Body Composition, Aragon et al. 2017) — as
 referências completas estão comentadas no código
 (`src/domain/services/macroCalculator.ts`).
 
-## Próximos passos sugeridos
-
-- Expandir o catálogo de alimentos (hoje ~45, cobrindo as 6 categorias)
-- Adicionar mais perfis "personalizados" com granularidade por alimento
-- Testes automatizados para `planGenerator.ts` e `macroCalculator.ts`
-- Cache de catálogo (perfis/objetivos/alimentos mudam pouco) para reduzir
-  consultas ao banco
