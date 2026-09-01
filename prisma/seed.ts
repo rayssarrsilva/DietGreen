@@ -1,4 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+declare const require: (id: string) => any;
+
+const { PrismaClient }: { PrismaClient: new () => any } = require("@prisma/client");
+
 import { dietaryProfilesSeed } from "./seed-data/dietary-profiles";
 import { goalsSeed } from "./seed-data/goals";
 import { foodsSeed } from "./seed-data/foods";
@@ -37,8 +40,12 @@ async function main() {
   console.log("Seeding substitution rankings...");
   const profiles = await prisma.dietaryProfile.findMany();
   const foods = await prisma.food.findMany();
-  const profileBySlug = new Map(profiles.map((p) => [p.slug, p]));
-  const foodBySlug = new Map(foods.map((f) => [f.slug, f]));
+  const profileBySlug = new Map<string, { id: string; slug: string }>(
+    profiles.map((p) => [p.slug, p])
+  );
+  const foodBySlug = new Map<string, { id: string; slug: string }>(
+    foods.map((f) => [f.slug, f])
+  );
 
   for (const s of substitutionsSeed) {
     const profile = profileBySlug.get(s.dietaryProfileSlug);
@@ -72,7 +79,7 @@ async function main() {
 main()
   .catch((e) => {
     console.error(e);
-    process.exit(1);
+    throw e;
   })
   .finally(async () => {
     await prisma.$disconnect();
