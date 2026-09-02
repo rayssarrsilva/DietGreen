@@ -1,13 +1,21 @@
-declare const require: (id: string) => any;
-
-const { PrismaClient }: { PrismaClient: new () => any } = require("@prisma/client");
+import "dotenv/config";
+import { PrismaClient } from "../src/generated/prisma/client";
+import { PrismaNeon } from "@prisma/adapter-neon";
 
 import { dietaryProfilesSeed } from "./seed-data/dietary-profiles";
 import { goalsSeed } from "./seed-data/goals";
 import { foodsSeed } from "./seed-data/foods";
 import { substitutionsSeed } from "./seed-data/substitutions";
 
-const prisma = new PrismaClient();
+const connectionString = process.env.DIRECT_URL;
+
+if (!connectionString) {
+  throw new Error("DIRECT_URL não definida.");
+}
+
+const adapter = new PrismaNeon({ connectionString });
+
+const prisma = new PrismaClient({ adapter });
 
 async function main() {
   console.log("Seeding dietary profiles...");
