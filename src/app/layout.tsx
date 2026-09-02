@@ -2,10 +2,6 @@ import type { Metadata } from "next";
 import { Fraunces, Work_Sans } from "next/font/google";
 import "./globals.css";
 
-// Fraunces: serif com personalidade editorial/orgânica — usada em títulos.
-// Work Sans: sã-serif geométrica limpa, muito usada em produtos modernos —
-// usada no corpo e na UI. Ambas variáveis, self-hosted via next/font
-// (sem dependência de CDN externo, ótimo para performance).
 const fraunces = Fraunces({
   variable: "--font-display",
   subsets: ["latin"],
