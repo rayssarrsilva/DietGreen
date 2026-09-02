@@ -29,6 +29,7 @@ export function calculateBMR(bio: UserBiometrics): number {
   if (sex === "M") return base + 5;
   if (sex === "F") return base - 161;
   return base - 78; 
+}
 
 export function calculateMacroTarget(
   bio: UserBiometrics,

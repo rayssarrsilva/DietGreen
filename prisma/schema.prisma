@@ -2,15 +2,13 @@
 // Rode: npx prisma migrate dev --name init
 
 generator client {
-  provider        = "prisma-client-js"
-  previewFeatures = ["queryCompiler", "driverAdapters"]
-  engineType      = "client"
+  provider   = "prisma-client"
+  output     = "../src/generated/prisma"
+  engineType = "client"
 }
 
 datasource db {
-  provider  = "postgresql"
-  url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider = "postgresql"
 }
 
 // ---------- NextAuth (Google / GitHub) ----------
@@ -65,14 +63,14 @@ model VerificationToken {
   @@unique([identifier, token])
 }
 
-// Preferências persistidas do usuário (para o app lembrar quando ele voltar)
+// Preferências persistidas do usuário
 model UserSettings {
   id              String   @id @default(cuid())
   userId          String   @unique
   user            User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dietaryProfile  String? // slug do DietaryProfile escolhido
-  goal            String? // slug do Goal escolhido
-  feasibilityTags String[] // tags de viabilidade econômica/local marcadas
+  dietaryProfile  String?
+  goal            String?
+  feasibilityTags FeasibilityTag[]
   updatedAt       DateTime @updatedAt
 }
 
@@ -92,62 +90,62 @@ enum FeasibilityTag {
   MEDIO_CUSTO
   ALTO_CUSTO
   FACIL_DE_ACHAR
-  ESPECIALIZADO // feiras/lojas naturais/importado
+  ESPECIALIZADO
 }
 
 model DietaryProfile {
-  id          String  @id @default(cuid())
-  slug        String  @unique
-  name        String
-  shortDesc   String
-  longDesc    String
-  allowsFish  Boolean @default(false)
-  allowsWhiteMeat Boolean @default(false)
-  allowsRedMeat   Boolean @default(false)
-  allowsDairy Boolean @default(false)
-  allowsEggs  Boolean @default(false)
-  allowsHoney Boolean @default(false)
-  sortOrder   Int     @default(0)
+  id                String  @id @default(cuid())
+  slug              String  @unique
+  name              String
+  shortDesc         String
+  longDesc          String
+  allowsFish        Boolean @default(false)
+  allowsWhiteMeat   Boolean @default(false)
+  allowsRedMeat     Boolean @default(false)
+  allowsDairy       Boolean @default(false)
+  allowsEggs        Boolean @default(false)
+  allowsHoney       Boolean @default(false)
+  sortOrder         Int     @default(0)
 
   foodSubs FoodSubstitution[]
   plans    MealPlan[]
 }
 
 model Goal {
-  id         String @id @default(cuid())
-  slug       String @unique
-  name       String
-  shortDesc  String
-  longDesc   String
-  proteinGKgMin Float // g de proteína por kg de peso corporal (faixa mín)
-  proteinGKgMax Float
-  calorieAdjustmentPct Float // ex: -20 para cutting, +15 para bulking
-  sortOrder  Int    @default(0)
+  id                  String @id @default(cuid())
+  slug                String @unique
+  name                String
+  shortDesc           String
+  longDesc            String
+  proteinGKgMin       Float
+  proteinGKgMax       Float
+  calorieAdjustmentPct Float
+  sortOrder           Int    @default(0)
 
   plans MealPlan[]
 }
 
 model Food {
-  id        String            @id @default(cuid())
-  slug      String            @unique
-  name      String
-  category  NutrientCategory
-  iconKey   String            // nome do ícone (lucide-react) ou chave de asset
-  containsAnimalProduct Boolean @default(false)
-  isMeat    Boolean @default(false)
-  isFish    Boolean @default(false)
-  isDairy   Boolean @default(false)
-  isEgg     Boolean @default(false)
+  id                    String            @id @default(cuid())
+  slug                  String            @unique
+  name                  String
+  category              NutrientCategory
+  iconKey               String
+  containsAnimalProduct Boolean           @default(false)
+  isMeat                Boolean           @default(false)
+  isFish                Boolean           @default(false)
+  isDairy               Boolean           @default(false)
+  isEgg                 Boolean           @default(false)
 
   // Info nutricional por 100g
-  kcal100g     Float
-  protein100g  Float
-  carbs100g    Float
-  fat100g      Float
-  fiber100g    Float
-  sodium100gMg Float @default(0)
-  sugar100gG   Float @default(0)
-  highlightMicros String[] // ex: ["Vitamina B12", "Ferro", "Ômega-3"]
+  kcal100g      Float
+  protein100g   Float
+  carbs100g     Float
+  fat100g       Float
+  fiber100g     Float
+  sodium100gMg  Float @default(0)
+  sugar100gG    Float @default(0)
+  highlightMicros String[]
 
   feasibilityTags FeasibilityTag[]
 
@@ -156,17 +154,15 @@ model Food {
   createdAt DateTime @default(now())
 }
 
-// Ranking de eficácia de um alimento como substituto, POR PERFIL
-// (o mesmo Food pode ter ranks diferentes dependendo do DietaryProfile)
 model FoodSubstitution {
   id               String         @id @default(cuid())
   dietaryProfile   DietaryProfile @relation(fields: [dietaryProfileId], references: [id])
   dietaryProfileId String
   food             Food           @relation(fields: [foodId], references: [id])
   foodId           String
-  replacesCategory NutrientCategory // o que esse alimento substitui (ex.: substitui PROTEIN animal)
-  efficacyRank     Int              // 1 = mais eficaz a curto prazo, 10 = menos eficaz
-  rationale        String           // por que tem esse rank (base em estudo/consenso nutricional)
+  replacesCategory NutrientCategory
+  efficacyRank     Int
+  rationale        String
 
   @@unique([dietaryProfileId, foodId, replacesCategory])
 }
@@ -174,18 +170,18 @@ model FoodSubstitution {
 // ---------- Plano gerado e salvo ----------
 
 model MealPlan {
-  id               String   @id @default(cuid())
-  userId           String
-  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  dietaryProfile   DietaryProfile @relation(fields: [dietaryProfileId], references: [id])
-  dietaryProfileId String
-  goal             Goal     @relation(fields: [goalId], references: [id])
-  goalId           String
-  daysCount        Int
-  optionsPerMeal   Int
-  feasibilityTags  FeasibilityTag[]
-  selectedFoodIds  String[] // foods que o usuário incluiu como viáveis
-  generatedPlan    Json     // estrutura final { days: [...] } já calculada
-  createdAt        DateTime @default(now())
-  updatedAt        DateTime @updatedAt
+  id                String         @id @default(cuid())
+  userId            String
+  user              User           @relation(fields: [userId], references: [id], onDelete: Cascade)
+  dietaryProfile    DietaryProfile @relation(fields: [dietaryProfileId], references: [id])
+  dietaryProfileId  String
+  goal              Goal           @relation(fields: [goalId], references: [id])
+  goalId            String
+  daysCount         Int
+  optionsPerMeal    Int
+  feasibilityTags   FeasibilityTag[]
+  selectedFoodIds   String[]
+  generatedPlan     Json
+  createdAt         DateTime       @default(now())
+  updatedAt         DateTime       @updatedAt
 }
