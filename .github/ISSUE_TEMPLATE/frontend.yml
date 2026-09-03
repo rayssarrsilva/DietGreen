@@ -1,0 +1,73 @@
+name: Frontend Task
+description: Report or propose a frontend implementation change.
+title: "[FRONTEND]: "
+labels:
+  - frontend
+  - needs-triage
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Frontend Task
+
+        Use this template for client-side implementation,
+        components, forms, state, validation, responsiveness,
+        accessibility, performance, or API integration.
+
+  - type: checkboxes
+    id: preliminary_checks
+    attributes:
+      label: Preliminary checks
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+
+  - type: textarea
+    id: task
+    attributes:
+      label: Task Description
+      description: Clearly describe what needs to be changed.
+    validations:
+      required: true
+
+  - type: textarea
+    id: current_behavior
+    attributes:
+      label: Current Implementation
+      description: Explain how the application currently behaves.
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected_behavior
+    attributes:
+      label: Expected Implementation
+      description: Describe the desired behavior or implementation.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: Frontend Category
+      options:
+        - Component
+        - State Management
+        - Form
+        - Validation
+        - API Integration
+        - Responsiveness
+        - Accessibility
+        - Performance
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: technical_context
+    attributes:
+      label: Technical Context
+      description: Mention relevant components, files, dependencies, or constraints.
+    validations:
+      required: false
