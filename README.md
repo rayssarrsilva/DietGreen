@@ -22,7 +22,8 @@ Authentication is optional and is integrated with **Google OAuth and GitHub OAut
 
 ## Demo
 
-**Live application:** https://diet-app-3iyl.onrender.com/
+<img width="1920" height="881" alt="dietapp1" src="https://github.com/user-attachments/assets/4da49f94-49a7-4bc2-8b71-739dad4a62fc" />
+
 
 ## Features
 
