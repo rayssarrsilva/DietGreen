@@ -3,7 +3,7 @@ import type {
   MealPlanRepository,
   SavedMealPlan,
 } from "@/domain/repositories/interfaces";
-import type { GeneratedPlan, FeasibilityTag } from "@/domain/entities/types";
+import type { GeneratedPlan, FeasibilityTag, OptionsPerCategory } from "@/domain/entities/types";
 
 export class PrismaMealPlanRepository implements MealPlanRepository {
   async save(
@@ -11,7 +11,7 @@ export class PrismaMealPlanRepository implements MealPlanRepository {
     dietaryProfileId: string,
     goalId: string,
     daysCount: number,
-    optionsPerMeal: number,
+    optionsPerCategory: OptionsPerCategory,
     feasibilityTags: FeasibilityTag[],
     selectedFoodIds: string[],
     plan: GeneratedPlan
@@ -22,7 +22,7 @@ export class PrismaMealPlanRepository implements MealPlanRepository {
         dietaryProfileId,
         goalId,
         daysCount,
-        optionsPerMeal,
+        optionsPerCategory: optionsPerCategory as unknown as object,
         feasibilityTags,
         selectedFoodIds,
         generatedPlan: plan as unknown as object,
@@ -42,7 +42,7 @@ export class PrismaMealPlanRepository implements MealPlanRepository {
       dietaryProfileSlug: p.dietaryProfile.slug,
       goalSlug: p.goal.slug,
       daysCount: p.daysCount,
-      optionsPerMeal: p.optionsPerMeal,
+      optionsPerCategory: p.optionsPerCategory as unknown as OptionsPerCategory,
       feasibilityTags: p.feasibilityTags,
       selectedFoodIds: p.selectedFoodIds,
       plan: p.generatedPlan as unknown as GeneratedPlan,
@@ -61,7 +61,7 @@ export class PrismaMealPlanRepository implements MealPlanRepository {
       dietaryProfileSlug: p.dietaryProfile.slug,
       goalSlug: p.goal.slug,
       daysCount: p.daysCount,
-      optionsPerMeal: p.optionsPerMeal,
+      optionsPerCategory: p.optionsPerCategory as unknown as OptionsPerCategory,
       feasibilityTags: p.feasibilityTags,
       selectedFoodIds: p.selectedFoodIds,
       plan: p.generatedPlan as unknown as GeneratedPlan,
