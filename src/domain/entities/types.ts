@@ -82,6 +82,13 @@ export interface MacroTarget {
   fiberG: number;
 }
 
+// As 4 categorias de variedade que o usuário controla na etapa de ajustes.
+export type VarietyCategory = "PROTEIN" | "COMPLEX_CARB" | "GOOD_FAT" | "FIBER";
+
+// Quantas opções distintas (5 a 20) o usuário quer que entrem no rodízio de
+// cada categoria — quanto maior o número, mais variado fica o cardápio.
+export type OptionsPerCategory = Record<VarietyCategory, number>;
+
 export interface MealPlanDay {
   day: number;
   meals: {
@@ -89,6 +96,7 @@ export interface MealPlanDay {
     options: {
       foodId: string;
       foodName: string;
+      category: VarietyCategory;
       grams: number;
       kcal: number;
       proteinG: number;
