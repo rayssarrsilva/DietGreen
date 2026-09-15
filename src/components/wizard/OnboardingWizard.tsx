@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import type { DietaryProfile, Goal, Food, FeasibilityTag, GeneratedPlan } from "@/domain/entities/types";
+import type { DietaryProfile, Goal, Food, FeasibilityTag, GeneratedPlan, VarietyCategory, OptionsPerCategory } from "@/domain/entities/types";
 import { getFoodIcon } from "@/lib/icons";
 import { Button } from "@/components/ui/Button";
 import { clsx } from "clsx";
@@ -34,6 +34,27 @@ const CATEGORY_ORDER: Food["category"][] = [
   "MINERAL",
 ];
 
+const VARIETY_CATEGORY_ORDER: VarietyCategory[] = [
+  "PROTEIN",
+  "COMPLEX_CARB",
+  "GOOD_FAT",
+  "FIBER",
+];
+
+const VARIETY_CATEGORY_LABEL: Record<VarietyCategory, string> = {
+  PROTEIN: "Proteína",
+  COMPLEX_CARB: "Carboidrato",
+  GOOD_FAT: "Gordura boa",
+  FIBER: "Fibra",
+};
+
+const DEFAULT_OPTIONS_PER_CATEGORY: OptionsPerCategory = {
+  PROTEIN: 10,
+  COMPLEX_CARB: 10,
+  GOOD_FAT: 10,
+  FIBER: 10,
+};
+
 export function OnboardingWizard({
   profiles,
   goals,
@@ -49,7 +70,9 @@ export function OnboardingWizard({
   const [feasibility, setFeasibility] = useState<FeasibilityTag[]>([]);
   const [selectedFoodIds, setSelectedFoodIds] = useState<string[]>([]);
   const [daysCount, setDaysCount] = useState(7);
-  const [optionsPerMeal, setOptionsPerMeal] = useState(2);
+  const [optionsPerCategory, setOptionsPerCategory] = useState<OptionsPerCategory>(
+    DEFAULT_OPTIONS_PER_CATEGORY
+  );
   const [biometrics, setBiometrics] = useState({
     weightKg: 70,
     heightCm: 170,
@@ -94,6 +117,10 @@ export function OnboardingWizard({
     );
   }
 
+  function setCategoryOptions(category: VarietyCategory, value: number) {
+    setOptionsPerCategory((prev) => ({ ...prev, [category]: value }));
+  }
+
   async function generate() {
     if (!profile || !goal) return;
     setLoading(true);
@@ -109,7 +136,7 @@ export function OnboardingWizard({
           feasibilityTags: feasibility,
           selectedFoodIds,
           daysCount,
-          optionsPerMeal,
+          optionsPerCategory,
         }),
       });
       const data = await res.json();
@@ -347,18 +374,12 @@ export function OnboardingWizard({
         <section>
           <h1 className="font-display text-2xl mb-2">Últimos ajustes</h1>
           <p className="text-ink-muted mb-6">
-            Quantas opções de alimento por refeição, e por quantos dias?
+            Por quantos dias, e quantas opções diferentes de cada tipo de
+            alimento você quer no rodízio? Quanto maior o número, menos o
+            cardápio repete os mesmos alimentos de um dia para o outro.
           </p>
-          <div className="grid sm:grid-cols-2 gap-4 mb-8">
-            <Field label={`Opções por refeição: ${optionsPerMeal}`}>
-              <input
-                type="range"
-                min={1}
-                max={5}
-                value={optionsPerMeal}
-                onChange={(e) => setOptionsPerMeal(Number(e.target.value))}
-              />
-            </Field>
+
+          <div className="mb-8">
             <Field label={`Duração do cardápio: ${daysCount} dia(s)`}>
               <input
                 type="range"
@@ -368,6 +389,29 @@ export function OnboardingWizard({
                 onChange={(e) => setDaysCount(Number(e.target.value))}
               />
             </Field>
+          </div>
+
+          <h2 className="font-display text-lg mb-2">Variedade por categoria</h2>
+          <p className="text-sm text-ink-muted mb-4">
+            Para cada categoria, escolha entre 5 e 20 opções diferentes que
+            poderão entrar no seu cardápio, respeitando o perfil e os
+            alimentos que você marcou antes.
+          </p>
+          <div className="grid sm:grid-cols-2 gap-4 mb-8">
+            {VARIETY_CATEGORY_ORDER.map((category) => (
+              <Field
+                key={category}
+                label={`${VARIETY_CATEGORY_LABEL[category]}: ${optionsPerCategory[category]} opções`}
+              >
+                <input
+                  type="range"
+                  min={5}
+                  max={20}
+                  value={optionsPerCategory[category]}
+                  onChange={(e) => setCategoryOptions(category, Number(e.target.value))}
+                />
+              </Field>
+            ))}
           </div>
 
           {error && <p className="text-sm text-berry mb-4">{error}</p>}
@@ -461,7 +505,12 @@ function PlanResult({ plan, savedId }: { plan: GeneratedPlan; savedId: string | 
                   <ul className="text-sm text-ink-muted space-y-1">
                     {meal.options.map((opt, i) => (
                       <li key={i} className="flex justify-between">
-                        <span>{opt.foodName}</span>
+                        <span>
+                          {opt.foodName}{" "}
+                          <span className="text-xs text-accent">
+                            ({CATEGORY_LABEL[opt.category]})
+                          </span>
+                        </span>
                         <span>
                           {opt.grams}g · {opt.kcal} kcal
                         </span>

@@ -18,7 +18,12 @@ const bodySchema = z.object({
   ),
   selectedFoodIds: z.array(z.string()),
   daysCount: z.number().min(1).max(14),
-  optionsPerMeal: z.number().min(1).max(5),
+  optionsPerCategory: z.object({
+    PROTEIN: z.number().min(5).max(20),
+    COMPLEX_CARB: z.number().min(5).max(20),
+    GOOD_FAT: z.number().min(5).max(20),
+    FIBER: z.number().min(5).max(20),
+  }),
 });
 
 export async function POST(req: NextRequest) {
