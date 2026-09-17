@@ -34,6 +34,8 @@ const CATEGORY_ORDER: Food["category"][] = [
   "MINERAL",
 ];
 
+// As 4 categorias que entram no rodízio do cardápio, com o rótulo curto
+// usado nos sliders de variedade.
 const VARIETY_CATEGORY_ORDER: VarietyCategory[] = [
   "PROTEIN",
   "COMPLEX_CARB",
@@ -78,12 +80,12 @@ export function OnboardingWizard({
     heightCm: 170,
     age: 28,
     sex: "M" as "M" | "F" | "outro",
-    activityLevel: "moderado" as
-      | "sedentario"
-      | "leve"
-      | "moderado"
-      | "intenso"
-      | "atleta",
+    dailyActivityLevel: "pouco_ativa" as "sedentaria" | "pouco_ativa" | "ativa",
+    trainingSessionsPerWeek: 2,
+    trainingSessionDurationMin: 60,
+    trainingIntensity: "moderada" as "leve" | "moderada" | "intensa",
+    desiredWeightKg: undefined as number | undefined,
+    avgDailySteps: undefined as number | undefined,
   });
   const [plan, setPlan] = useState<GeneratedPlan | null>(null);
   const [savedId, setSavedId] = useState<string | null>(null);
@@ -269,20 +271,87 @@ export function OnboardingWizard({
                 <option value="outro">Prefiro não informar</option>
               </select>
             </Field>
-            <Field label="Nível de atividade física">
+            <Field label="Atividade fora da academia (trabalho, deslocamento, dia a dia)">
               <select
                 className="input"
-                value={biometrics.activityLevel}
+                value={biometrics.dailyActivityLevel}
                 onChange={(e) =>
-                  setBiometrics({ ...biometrics, activityLevel: e.target.value as typeof biometrics.activityLevel })
+                  setBiometrics({
+                    ...biometrics,
+                    dailyActivityLevel: e.target.value as typeof biometrics.dailyActivityLevel,
+                  })
                 }
               >
-                <option value="sedentario">Sedentário</option>
-                <option value="leve">Leve (1-3x/semana)</option>
-                <option value="moderado">Moderado (3-5x/semana)</option>
-                <option value="intenso">Intenso (6-7x/semana)</option>
-                <option value="atleta">Atleta</option>
+                <option value="sedentaria">Sedentária (trabalho sentado, pouco deslocamento)</option>
+                <option value="pouco_ativa">Pouco ativa (fica de pé/anda um pouco no dia)</option>
+                <option value="ativa">Ativa (trabalho físico ou anda bastante)</option>
               </select>
+            </Field>
+            <Field label="Passos médios por dia (opcional, se souber)">
+              <input
+                type="number"
+                className="input"
+                placeholder="ex: 6000"
+                value={biometrics.avgDailySteps ?? ""}
+                onChange={(e) =>
+                  setBiometrics({
+                    ...biometrics,
+                    avgDailySteps: e.target.value === "" ? undefined : Number(e.target.value),
+                  })
+                }
+              />
+            </Field>
+            <Field label="Treinos por semana">
+              <input
+                type="number"
+                className="input"
+                min={0}
+                value={biometrics.trainingSessionsPerWeek}
+                onChange={(e) =>
+                  setBiometrics({ ...biometrics, trainingSessionsPerWeek: Number(e.target.value) })
+                }
+              />
+            </Field>
+            <Field label="Duração média de cada treino (min)">
+              <input
+                type="number"
+                className="input"
+                min={0}
+                value={biometrics.trainingSessionDurationMin}
+                onChange={(e) =>
+                  setBiometrics({ ...biometrics, trainingSessionDurationMin: Number(e.target.value) })
+                }
+              />
+            </Field>
+            <Field label="Intensidade do treino">
+              <select
+                className="input"
+                value={biometrics.trainingIntensity}
+                onChange={(e) =>
+                  setBiometrics({
+                    ...biometrics,
+                    trainingIntensity: e.target.value as typeof biometrics.trainingIntensity,
+                  })
+                }
+              >
+                <option value="leve">Leve</option>
+                <option value="moderada">Moderada</option>
+                <option value="intensa">Intensa</option>
+              </select>
+            </Field>
+            <Field label="Peso desejado em kg (opcional)">
+              <input
+                type="number"
+                className="input"
+                placeholder="ex: 48"
+                value={biometrics.desiredWeightKg ?? ""}
+                onChange={(e) =>
+                  setBiometrics({
+                    ...biometrics,
+                    desiredWeightKg: e.target.value === "" ? undefined : Number(e.target.value),
+                  })
+                }
+              />
             </Field>
           </div>
 
@@ -559,12 +628,19 @@ function RangeMetric({
   );
 }
 
-// Mostra o total real do dia e sinaliza (com cor) se ficou abaixo do mínimo
-// aceitável daquela meta — é o "range" pedido na issue #3, aplicado ao que
-// o cardápio de fato entrega, não só à meta calculada.
-function formatAgainstRange(actual: number, range: { min: number; ideal: number }) {
-  const belowMin = actual < range.min;
-  return (
-    <span className={belowMin ? "text-berry font-medium" : undefined}>{actual}</span>
-  );
+// Classifica o total real do dia contra a faixa calculada, sem tratar
+// "não bateu o mínimo" como deficiência nem "passou do ideal" como
+// automaticamente um problema — só sinaliza quando fica bem acima do
+// esperado (ver DAILY_TARGET_EXCESSIVE_RATIO em planGenerator.ts).
+function formatAgainstRange(
+  actual: number,
+  range: { min: number; ideal: number; excessive: number }
+) {
+  const className =
+    actual < range.min
+      ? "text-accent font-medium"
+      : actual > range.excessive
+        ? "text-berry font-medium"
+        : undefined;
+  return <span className={className}>{actual}</span>;
 }
