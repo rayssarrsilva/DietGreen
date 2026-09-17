@@ -4,6 +4,8 @@ import type {
   MacroTarget,
   GeneratedPlan,
   MealPlanDay,
+  DailyTargetRange,
+  DailyTotals,
   FeasibilityTag,
   VarietyCategory,
   OptionsPerCategory,
@@ -23,6 +25,8 @@ const SLOT_KCAL_SHARE: Record<string, number> = {
   jantar: 0.25,
 };
 
+// Como o kcal de cada refeição se divide entre as 4 categorias que compõem
+// o prato (proteína, carboidrato, gordura boa e uma porção rica em fibra).
 const CATEGORY_KCAL_SHARE: Record<VarietyCategory, number> = {
   PROTEIN: 0.35,
   COMPLEX_CARB: 0.35,
@@ -39,6 +43,11 @@ const VARIETY_CATEGORIES: VarietyCategory[] = [
 
 const MIN_OPTIONS_PER_CATEGORY = 5;
 const MAX_OPTIONS_PER_CATEGORY = 20;
+
+// Piso aceitável de cada meta diária, como fração do valor ideal (issue #3):
+// em vez de exigir o número exato, a pessoa vê que basta chegar em pelo
+// menos 85% do ideal naquele dia.
+const DAILY_TARGET_MIN_RATIO = 0.85;
 
 export interface PlanGeneratorInput {
   dietaryProfileSlug: string;
@@ -58,14 +67,48 @@ function grams(food: Food, targetKcalForFood: number): number {
 
 function buildOption(food: Food, category: VarietyCategory, targetKcal: number) {
   const g = grams(food, targetKcal);
+  const factor = g / 100;
   return {
     foodId: food.id,
     foodName: food.name,
     category,
     grams: g,
-    kcal: Math.round((g / 100) * food.nutrition.kcal100g),
-    proteinG: Math.round((g / 100) * food.nutrition.protein100g),
+    kcal: Math.round(factor * food.nutrition.kcal100g),
+    proteinG: Math.round(factor * food.nutrition.protein100g),
+    carbsG: Math.round(factor * food.nutrition.carbs100g),
+    fatG: Math.round(factor * food.nutrition.fat100g),
+    fiberG: Math.round(factor * food.nutrition.fiber100g),
   };
+}
+
+function buildTargetRange(target: MacroTarget): DailyTargetRange {
+  const range = (ideal: number) => ({
+    min: Math.round(ideal * DAILY_TARGET_MIN_RATIO),
+    ideal,
+  });
+  return {
+    kcal: range(target.kcal),
+    proteinG: range(target.proteinG),
+    carbsG: range(target.carbsG),
+    fatG: range(target.fatG),
+    fiberG: range(target.fiberG),
+  };
+}
+
+function sumDailyTotals(meals: MealPlanDay["meals"]): DailyTotals {
+  return meals.reduce(
+    (acc, meal) => {
+      meal.options.forEach((opt) => {
+        acc.kcal += opt.kcal;
+        acc.proteinG += opt.proteinG;
+        acc.carbsG += opt.carbsG;
+        acc.fatG += opt.fatG;
+        acc.fiberG += opt.fiberG;
+      });
+      return acc;
+    },
+    { kcal: 0, proteinG: 0, carbsG: 0, fatG: 0, fiberG: 0 }
+  );
 }
 
 function rankFoodsForCategory(
@@ -185,8 +228,8 @@ export function generateMealPlan(input: PlanGeneratorInput): GeneratedPlan {
       return { slot, options };
     });
 
-    days.push({ day: d, meals });
+    days.push({ day: d, totals: sumDailyTotals(meals), meals });
   }
 
-  return { days, macroTarget };
+  return { days, macroTarget, targetRange: buildTargetRange(macroTarget) };
 }

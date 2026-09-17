@@ -82,15 +82,34 @@ export interface MacroTarget {
   fiberG: number;
 }
 
-// As 4 categorias de variedade que o usuário controla na etapa de ajustes.
+export interface MacroRange {
+  min: number;
+  ideal: number;
+}
+
+export interface DailyTargetRange {
+  kcal: MacroRange;
+  proteinG: MacroRange;
+  carbsG: MacroRange;
+  fatG: MacroRange;
+  fiberG: MacroRange;
+}
+
+export interface DailyTotals {
+  kcal: number;
+  proteinG: number;
+  carbsG: number;
+  fatG: number;
+  fiberG: number;
+}
+
 export type VarietyCategory = "PROTEIN" | "COMPLEX_CARB" | "GOOD_FAT" | "FIBER";
 
-// Quantas opções distintas (5 a 20) o usuário quer que entrem no rodízio de
-// cada categoria — quanto maior o número, mais variado fica o cardápio.
 export type OptionsPerCategory = Record<VarietyCategory, number>;
 
 export interface MealPlanDay {
   day: number;
+  totals: DailyTotals;
   meals: {
     slot: "cafe_da_manha" | "almoco" | "lanche" | "jantar";
     options: {
@@ -100,6 +119,9 @@ export interface MealPlanDay {
       grams: number;
       kcal: number;
       proteinG: number;
+      carbsG: number;
+      fatG: number;
+      fiberG: number;
     }[];
   }[];
 }
@@ -107,4 +129,5 @@ export interface MealPlanDay {
 export interface GeneratedPlan {
   days: MealPlanDay[];
   macroTarget: MacroTarget;
+  targetRange: DailyTargetRange;
 }
