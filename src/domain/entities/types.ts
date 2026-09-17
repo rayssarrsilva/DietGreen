@@ -85,10 +85,13 @@ export interface MacroTarget {
 // Uma faixa aceitável para uma meta diária: "ideal" é o valor calculado pro
 // perfil da pessoa, "min" é o piso aceitável caso o cardápio gerado não
 // bata o ideal exato naquele dia (issue #3 — mostrar range em vez de número
-// rígido).
+// rígido), e "excessive" é o teto a partir do qual vale sinalizar que o
+// total ficou bem acima do calculado — sem tratar "abaixo do mínimo" como
+// deficiência nem "acima do ideal" como automaticamente um problema.
 export interface MacroRange {
   min: number;
   ideal: number;
+  excessive: number;
 }
 
 export interface DailyTargetRange {

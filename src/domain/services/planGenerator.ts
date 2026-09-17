@@ -35,8 +35,20 @@ const CATEGORY_NUTRITION_FIELD: Record<
   FIBER: "fiber100g",
 };
 
+// Ordem em que cada refeição é montada: proteína e gordura primeiro (fontes
+// mais "limpas", nutricionalmente concentradas), depois a porção de fibra
+// (vegetal/fruta — normalmente pouco concentrada, por isso vem antes do
+// carboidrato), e o carboidrato por último, absorvendo o que sobrar da meta
+// de carboidrato depois de descontar o que as outras 3 já trouxeram de
+// brinde. É a mesma lógica que o macroCalculator já usa pra meta diária
+// ("carboidrato = o que sobra") — ver nota grande abaixo em `buildMealOptions`.
 const GENERATION_ORDER: VarietyCategory[] = ["PROTEIN", "GOOD_FAT", "FIBER", "COMPLEX_CARB"];
 
+// Porção máxima realista (em gramas) de um único alimento numa refeição.
+// Sem isso, um alimento pouco concentrado no macro que ele representa (ex.:
+// maçã tem só 2,4g de fibra por 100g) precisaria de uma porção absurda
+// (300-900g) só pra bater a meta daquele macro sozinho — e de quebra
+// arrastava uma quantidade enorme de carboidrato/kcal "de brinde".
 const MAX_GRAMS_PER_ITEM: Record<VarietyCategory, number> = {
   PROTEIN: 300,
   GOOD_FAT: 50,
@@ -47,7 +59,16 @@ const MAX_GRAMS_PER_ITEM: Record<VarietyCategory, number> = {
 const MIN_OPTIONS_PER_CATEGORY = 5;
 const MAX_OPTIONS_PER_CATEGORY = 20;
 
+// Piso aceitável de cada meta diária, como fração do valor ideal (issue #3):
+// em vez de exigir o número exato, a pessoa vê que basta chegar em pelo
+// menos 85% do ideal naquele dia.
 const DAILY_TARGET_MIN_RATIO = 0.85;
+
+// Teto a partir do qual o total do dia é sinalizado como "potencialmente
+// excessivo" — dado que alimentos de verdade não são puros num único macro
+// (ex.: leguminosa é proteína E fibra ao mesmo tempo), um pouco acima do
+// ideal é esperado e não é sinalizado; só um total bem além disso.
+const DAILY_TARGET_EXCESSIVE_RATIO = 1.75;
 
 export interface PlanGeneratorInput {
   dietaryProfileSlug: string;
@@ -80,6 +101,27 @@ function buildOption(food: Food, category: VarietyCategory, g: number) {
   };
 }
 
+/**
+ * Monta as 4 opções de uma refeição mirando a meta de GRAMAS de cada macro
+ * (não numa fatia de kcal — era isso que causava o descontrole: um alimento
+ * pouco concentrado no macro que representava exigia uma porção enorme pra
+ * bater a fatia de kcal, e essa porção enorme trazia de brinde uma
+ * quantidade grande dos OUTROS macros também, explodindo o total do dia).
+ *
+ * Duas correções entram junto:
+ * 1. Desconto residual: proteína e gordura são resolvidas primeiro; o que
+ *    elas trazem de carboidrato/fibra "de brinde" é descontado da meta
+ *    dessas categorias antes de escolher as próximas porções. Fibra vem
+ *    depois (geralmente baixa concentração, então sobra pouco carboidrato
+ *    contaminado) e carboidrato por último, absorvendo o restante — a
+ *    mesma lógica de "carboidrato é o que sobra" que o macroCalculator já
+ *    usa pra meta diária.
+ * 2. Teto de porção realista (MAX_GRAMS_PER_ITEM): sem isso, um alimento
+ *    fraco no macro (ex.: maçã pra fibra) pediria 300-900g pra fechar a
+ *    conta sozinho. Com o teto, a porção fica plausível e o que faltar de
+ *    fibra simplesmente fica abaixo do ideal naquele prato — o que é
+ *    honesto e já é comunicado pelo sistema de faixa mínimo–ideal (issue #3).
+ */
 function buildMealOptions(
   slotTargets: Record<VarietyCategory, number>,
   pickFood: (category: VarietyCategory) => Food | null
@@ -91,6 +133,9 @@ function buildMealOptions(
     const food = pickFood(category);
     if (!food) continue;
 
+    // Nunca deixa a porção zerar por causa do desconto — garante uma
+    // porção mínima plausível (15% da meta original da refeição) mesmo
+    // se categorias anteriores já tiverem coberto o resto do macro.
     const target = Math.max(remaining[category], slotTargets[category] * 0.15);
     const nutritionField = CATEGORY_NUTRITION_FIELD[category];
     const rawGrams = grams(food.nutrition[nutritionField], target);
@@ -99,6 +144,8 @@ function buildMealOptions(
     const option = buildOption(food, category, cappedGrams);
     options.push(option);
 
+    // Desconta o que essa porção já trouxe de cada macro da meta das
+    // categorias ainda não processadas nesta refeição.
     remaining.PROTEIN -= option.proteinG;
     remaining.COMPLEX_CARB -= option.carbsG;
     remaining.GOOD_FAT -= option.fatG;
@@ -112,6 +159,7 @@ function buildTargetRange(target: MacroTarget): DailyTargetRange {
   const range = (ideal: number) => ({
     min: Math.round(ideal * DAILY_TARGET_MIN_RATIO),
     ideal,
+    excessive: Math.round(ideal * DAILY_TARGET_EXCESSIVE_RATIO),
   });
   return {
     kcal: range(target.kcal),
@@ -165,6 +213,14 @@ function shuffle<T>(items: T[]): T[] {
   return result;
 }
 
+/**
+ * Cria um "saco embaralhado" para uma categoria: a cada chamada devolve o
+ * próximo alimento do pool sem repetir nenhum até que todos os `poolSize`
+ * alimentos já tenham saído uma vez. Isso é o que resolve a issue #4 — antes,
+ * o rodízio era feito com `(dia + slot) % tamanho`, que repete o mesmo padrão
+ * rapidinho quando o pool é pequeno. Agora a repetição só acontece depois de
+ * esgotar as `optionsPerCategory` opções escolhidas pelo usuário.
+ */
 function createRotator(rankedPool: Food[], desiredSize: number): () => Food | null {
   if (rankedPool.length === 0) {
     return () => null;
@@ -181,7 +237,7 @@ function createRotator(rankedPool: Food[], desiredSize: number): () => Food | nu
 
   function refill() {
     bag = shuffle(pool);
-
+    // Evita repetir o mesmo alimento duas vezes seguidas na virada do saco.
     if (lastFoodId && bag.length > 1 && bag[0].id === lastFoodId) {
       [bag[0], bag[1]] = [bag[1], bag[0]];
     }
