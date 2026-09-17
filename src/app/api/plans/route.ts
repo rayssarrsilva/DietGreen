@@ -11,7 +11,12 @@ const bodySchema = z.object({
     heightCm: z.number().min(100).max(250),
     age: z.number().min(14).max(100),
     sex: z.enum(["M", "F", "outro"]),
-    activityLevel: z.enum(["sedentario", "leve", "moderado", "intenso", "atleta"]),
+    dailyActivityLevel: z.enum(["sedentaria", "pouco_ativa", "ativa"]),
+    trainingSessionsPerWeek: z.number().min(0).max(14),
+    trainingSessionDurationMin: z.number().min(0).max(300),
+    trainingIntensity: z.enum(["leve", "moderada", "intensa"]),
+    desiredWeightKg: z.number().min(30).max(300).optional(),
+    avgDailySteps: z.number().min(0).max(50000).optional(),
   }),
   feasibilityTags: z.array(
     z.enum(["BAIXO_CUSTO", "MEDIO_CUSTO", "ALTO_CUSTO", "FACIL_DE_ACHAR", "ESPECIALIZADO"])

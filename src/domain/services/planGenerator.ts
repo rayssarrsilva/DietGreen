@@ -4,6 +4,8 @@ import type {
   MacroTarget,
   GeneratedPlan,
   MealPlanDay,
+  DailyTargetRange,
+  DailyTotals,
   FeasibilityTag,
   VarietyCategory,
   OptionsPerCategory,
@@ -23,22 +25,29 @@ const SLOT_KCAL_SHARE: Record<string, number> = {
   jantar: 0.25,
 };
 
-const CATEGORY_KCAL_SHARE: Record<VarietyCategory, number> = {
-  PROTEIN: 0.35,
-  COMPLEX_CARB: 0.35,
-  GOOD_FAT: 0.15,
-  FIBER: 0.15,
+const CATEGORY_NUTRITION_FIELD: Record<
+  VarietyCategory,
+  "protein100g" | "carbs100g" | "fat100g" | "fiber100g"
+> = {
+  PROTEIN: "protein100g",
+  COMPLEX_CARB: "carbs100g",
+  GOOD_FAT: "fat100g",
+  FIBER: "fiber100g",
 };
 
-const VARIETY_CATEGORIES: VarietyCategory[] = [
-  "PROTEIN",
-  "COMPLEX_CARB",
-  "GOOD_FAT",
-  "FIBER",
-];
+const GENERATION_ORDER: VarietyCategory[] = ["PROTEIN", "GOOD_FAT", "FIBER", "COMPLEX_CARB"];
+
+const MAX_GRAMS_PER_ITEM: Record<VarietyCategory, number> = {
+  PROTEIN: 300,
+  GOOD_FAT: 50,
+  FIBER: 250,
+  COMPLEX_CARB: 400,
+};
 
 const MIN_OPTIONS_PER_CATEGORY = 5;
 const MAX_OPTIONS_PER_CATEGORY = 20;
+
+const DAILY_TARGET_MIN_RATIO = 0.85;
 
 export interface PlanGeneratorInput {
   dietaryProfileSlug: string;
@@ -51,21 +60,82 @@ export interface PlanGeneratorInput {
   optionsPerCategory: OptionsPerCategory;
 }
 
-function grams(food: Food, targetKcalForFood: number): number {
-  if (food.nutrition.kcal100g <= 0) return 0;
-  return Math.round((targetKcalForFood / food.nutrition.kcal100g) * 100);
+function grams(nutrientPer100g: number, targetNutrientGrams: number): number {
+  if (nutrientPer100g <= 0 || targetNutrientGrams <= 0) return 0;
+  return Math.round((targetNutrientGrams / nutrientPer100g) * 100);
 }
 
-function buildOption(food: Food, category: VarietyCategory, targetKcal: number) {
-  const g = grams(food, targetKcal);
+function buildOption(food: Food, category: VarietyCategory, g: number) {
+  const factor = g / 100;
   return {
     foodId: food.id,
     foodName: food.name,
     category,
     grams: g,
-    kcal: Math.round((g / 100) * food.nutrition.kcal100g),
-    proteinG: Math.round((g / 100) * food.nutrition.protein100g),
+    kcal: Math.round(factor * food.nutrition.kcal100g),
+    proteinG: Math.round(factor * food.nutrition.protein100g),
+    carbsG: Math.round(factor * food.nutrition.carbs100g),
+    fatG: Math.round(factor * food.nutrition.fat100g),
+    fiberG: Math.round(factor * food.nutrition.fiber100g),
   };
+}
+
+function buildMealOptions(
+  slotTargets: Record<VarietyCategory, number>,
+  pickFood: (category: VarietyCategory) => Food | null
+): MealPlanDay["meals"][number]["options"] {
+  const remaining: Record<VarietyCategory, number> = { ...slotTargets };
+  const options: MealPlanDay["meals"][number]["options"] = [];
+
+  for (const category of GENERATION_ORDER) {
+    const food = pickFood(category);
+    if (!food) continue;
+
+    const target = Math.max(remaining[category], slotTargets[category] * 0.15);
+    const nutritionField = CATEGORY_NUTRITION_FIELD[category];
+    const rawGrams = grams(food.nutrition[nutritionField], target);
+    const cappedGrams = Math.min(rawGrams, MAX_GRAMS_PER_ITEM[category]);
+
+    const option = buildOption(food, category, cappedGrams);
+    options.push(option);
+
+    remaining.PROTEIN -= option.proteinG;
+    remaining.COMPLEX_CARB -= option.carbsG;
+    remaining.GOOD_FAT -= option.fatG;
+    remaining.FIBER -= option.fiberG;
+  }
+
+  return options;
+}
+
+function buildTargetRange(target: MacroTarget): DailyTargetRange {
+  const range = (ideal: number) => ({
+    min: Math.round(ideal * DAILY_TARGET_MIN_RATIO),
+    ideal,
+  });
+  return {
+    kcal: range(target.kcal),
+    proteinG: range(target.proteinG),
+    carbsG: range(target.carbsG),
+    fatG: range(target.fatG),
+    fiberG: range(target.fiberG),
+  };
+}
+
+function sumDailyTotals(meals: MealPlanDay["meals"]): DailyTotals {
+  return meals.reduce(
+    (acc, meal) => {
+      meal.options.forEach((opt) => {
+        acc.kcal += opt.kcal;
+        acc.proteinG += opt.proteinG;
+        acc.carbsG += opt.carbsG;
+        acc.fatG += opt.fatG;
+        acc.fiberG += opt.fiberG;
+      });
+      return acc;
+    },
+    { kcal: 0, proteinG: 0, carbsG: 0, fatG: 0, fiberG: 0 }
+  );
 }
 
 function rankFoodsForCategory(
@@ -95,14 +165,6 @@ function shuffle<T>(items: T[]): T[] {
   return result;
 }
 
-/**
- * Cria um "saco embaralhado" para uma categoria: a cada chamada devolve o
- * próximo alimento do pool sem repetir nenhum até que todos os `poolSize`
- * alimentos já tenham saído uma vez. Isso é o que resolve a issue #4 — antes,
- * o rodízio era feito com `(dia + slot) % tamanho`, que repete o mesmo padrão
- * rapidinho quando o pool é pequeno. Agora a repetição só acontece depois de
- * esgotar as `optionsPerCategory` opções escolhidas pelo usuário.
- */
 function createRotator(rankedPool: Food[], desiredSize: number): () => Food | null {
   if (rankedPool.length === 0) {
     return () => null;
@@ -119,7 +181,7 @@ function createRotator(rankedPool: Food[], desiredSize: number): () => Food | nu
 
   function refill() {
     bag = shuffle(pool);
-    // Evita repetir o mesmo alimento duas vezes seguidas na virada do saco.
+
     if (lastFoodId && bag.length > 1 && bag[0].id === lastFoodId) {
       [bag[0], bag[1]] = [bag[1], bag[0]];
     }
@@ -160,7 +222,7 @@ export function generateMealPlan(input: PlanGeneratorInput): GeneratedPlan {
   });
 
   const rotators = Object.fromEntries(
-    VARIETY_CATEGORIES.map((category) => {
+    GENERATION_ORDER.map((category) => {
       const ranked = rankFoodsForCategory(pool, category, dietaryProfileSlug, substitutions);
       const desiredSize = clampOptionsCount(optionsPerCategory[category]);
       return [category, createRotator(ranked, desiredSize)];
@@ -171,22 +233,21 @@ export function generateMealPlan(input: PlanGeneratorInput): GeneratedPlan {
 
   for (let d = 1; d <= daysCount; d++) {
     const meals = MEAL_SLOTS.map((slot) => {
-      const slotKcal = macroTarget.kcal * SLOT_KCAL_SHARE[slot];
+      const slotShare = SLOT_KCAL_SHARE[slot];
+      const slotTargets: Record<VarietyCategory, number> = {
+        PROTEIN: macroTarget.proteinG * slotShare,
+        COMPLEX_CARB: macroTarget.carbsG * slotShare,
+        GOOD_FAT: macroTarget.fatG * slotShare,
+        FIBER: macroTarget.fiberG * slotShare,
+      };
 
-      const options: MealPlanDay["meals"][number]["options"] = [];
-
-      for (const category of VARIETY_CATEGORIES) {
-        const food = rotators[category]();
-        if (!food) continue;
-        const targetKcal = slotKcal * CATEGORY_KCAL_SHARE[category];
-        options.push(buildOption(food, category, targetKcal));
-      }
+      const options = buildMealOptions(slotTargets, (category) => rotators[category]());
 
       return { slot, options };
     });
 
-    days.push({ day: d, meals });
+    days.push({ day: d, totals: sumDailyTotals(meals), meals });
   }
 
-  return { days, macroTarget };
+  return { days, macroTarget, targetRange: buildTargetRange(macroTarget) };
 }

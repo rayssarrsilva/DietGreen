@@ -29,6 +29,9 @@ export function planToWorkbookBuffer(plan: GeneratedPlan): Buffer {
           Quantidade_g: opt.grams,
           Kcal: opt.kcal,
           Proteína_g: opt.proteinG,
+          Carboidrato_g: opt.carbsG,
+          Gordura_g: opt.fatG,
+          Fibra_g: opt.fiberG,
         });
       });
     });
@@ -38,13 +41,29 @@ export function planToWorkbookBuffer(plan: GeneratedPlan): Buffer {
   const workbook = XLSX.utils.book_new();
   XLSX.utils.book_append_sheet(workbook, worksheet, "Cardápio");
 
+  const dailyTotalsRows = plan.days.map((day) => ({
+    Dia: day.day,
+    Kcal_total: day.totals.kcal,
+    Proteína_g_total: day.totals.proteinG,
+    Carboidrato_g_total: day.totals.carbsG,
+    Gordura_g_total: day.totals.fatG,
+    Fibra_g_total: day.totals.fiberG,
+  }));
+  const dailyTotalsSheet = XLSX.utils.json_to_sheet(dailyTotalsRows);
+  XLSX.utils.book_append_sheet(workbook, dailyTotalsSheet, "Totais por dia");
+
   const summarySheet = XLSX.utils.json_to_sheet([
     {
-      Meta_kcal: plan.macroTarget.kcal,
-      Proteína_g: plan.macroTarget.proteinG,
-      Carboidrato_g: plan.macroTarget.carbsG,
-      Gordura_g: plan.macroTarget.fatG,
-      Fibra_g: plan.macroTarget.fiberG,
+      Meta_kcal_min: plan.targetRange.kcal.min,
+      Meta_kcal_ideal: plan.targetRange.kcal.ideal,
+      Proteína_g_min: plan.targetRange.proteinG.min,
+      Proteína_g_ideal: plan.targetRange.proteinG.ideal,
+      Carboidrato_g_min: plan.targetRange.carbsG.min,
+      Carboidrato_g_ideal: plan.targetRange.carbsG.ideal,
+      Gordura_g_min: plan.targetRange.fatG.min,
+      Gordura_g_ideal: plan.targetRange.fatG.ideal,
+      Fibra_g_min: plan.targetRange.fiberG.min,
+      Fibra_g_ideal: plan.targetRange.fiberG.ideal,
     },
   ]);
   XLSX.utils.book_append_sheet(workbook, summarySheet, "Metas diárias");
@@ -81,13 +100,18 @@ function PlanPdfDocument({ plan }: { plan: GeneratedPlan }) {
       React.createElement(
         Text,
         { style: styles.subtitle },
-        `Meta diária: ${plan.macroTarget.kcal} kcal · ${plan.macroTarget.proteinG}g proteína · ${plan.macroTarget.carbsG}g carboidrato · ${plan.macroTarget.fatG}g gordura · ${plan.macroTarget.fiberG}g fibra`
+        `Meta diária (mínimo–ideal): ${plan.targetRange.kcal.min}–${plan.targetRange.kcal.ideal} kcal · ${plan.targetRange.proteinG.min}–${plan.targetRange.proteinG.ideal}g proteína · ${plan.targetRange.carbsG.min}–${plan.targetRange.carbsG.ideal}g carboidrato · ${plan.targetRange.fatG.min}–${plan.targetRange.fatG.ideal}g gordura · ${plan.targetRange.fiberG.min}–${plan.targetRange.fiberG.ideal}g fibra`
       ),
       ...plan.days.map((day) =>
         React.createElement(
           View,
           { key: day.day, wrap: false },
           React.createElement(Text, { style: styles.dayHeader }, `Dia ${day.day}`),
+          React.createElement(
+            Text,
+            { style: styles.subtitle },
+            `Total do dia: ${day.totals.kcal} kcal · ${day.totals.proteinG}g proteína · ${day.totals.carbsG}g carboidrato · ${day.totals.fatG}g gordura · ${day.totals.fiberG}g fibra`
+          ),
           ...day.meals.map((meal) =>
             React.createElement(
               View,

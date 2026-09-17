@@ -82,6 +82,33 @@ export interface MacroTarget {
   fiberG: number;
 }
 
+// Uma faixa aceitável para uma meta diária: "ideal" é o valor calculado pro
+// perfil da pessoa, "min" é o piso aceitável caso o cardápio gerado não
+// bata o ideal exato naquele dia (issue #3 — mostrar range em vez de número
+// rígido).
+export interface MacroRange {
+  min: number;
+  ideal: number;
+}
+
+export interface DailyTargetRange {
+  kcal: MacroRange;
+  proteinG: MacroRange;
+  carbsG: MacroRange;
+  fatG: MacroRange;
+  fiberG: MacroRange;
+}
+
+// Soma real do que o cardápio gerado entrega num dia — usada para comparar
+// com o DailyTargetRange e mostrar pra pessoa o que ela vai consumir de fato.
+export interface DailyTotals {
+  kcal: number;
+  proteinG: number;
+  carbsG: number;
+  fatG: number;
+  fiberG: number;
+}
+
 // As 4 categorias de variedade que o usuário controla na etapa de ajustes.
 export type VarietyCategory = "PROTEIN" | "COMPLEX_CARB" | "GOOD_FAT" | "FIBER";
 
@@ -91,6 +118,7 @@ export type OptionsPerCategory = Record<VarietyCategory, number>;
 
 export interface MealPlanDay {
   day: number;
+  totals: DailyTotals;
   meals: {
     slot: "cafe_da_manha" | "almoco" | "lanche" | "jantar";
     options: {
@@ -100,6 +128,9 @@ export interface MealPlanDay {
       grams: number;
       kcal: number;
       proteinG: number;
+      carbsG: number;
+      fatG: number;
+      fiberG: number;
     }[];
   }[];
 }
@@ -107,4 +138,5 @@ export interface MealPlanDay {
 export interface GeneratedPlan {
   days: MealPlanDay[];
   macroTarget: MacroTarget;
+  targetRange: DailyTargetRange;
 }
