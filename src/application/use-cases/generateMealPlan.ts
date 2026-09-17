@@ -1,7 +1,7 @@
 import type { CatalogRepository, MealPlanRepository } from "@/domain/repositories/interfaces";
 import { calculateMacroTarget, type UserBiometrics } from "@/domain/services/macroCalculator";
 import { generateMealPlan as buildPlan } from "@/domain/services/planGenerator";
-import type { FeasibilityTag, GeneratedPlan } from "@/domain/entities/types";
+import type { FeasibilityTag, GeneratedPlan, OptionsPerCategory } from "@/domain/entities/types";
 
 export interface GeneratePlanRequest {
   userId?: string; // se ausente, gera mas não salva (usuário sem login)
@@ -11,7 +11,7 @@ export interface GeneratePlanRequest {
   feasibilityTags: FeasibilityTag[];
   selectedFoodIds: string[];
   daysCount: number;
-  optionsPerMeal: number;
+  optionsPerCategory: OptionsPerCategory;
 }
 
 export class GenerateMealPlanUseCase {
@@ -48,7 +48,7 @@ export class GenerateMealPlanUseCase {
       feasibilityFilter: req.feasibilityTags,
       selectedFoodIds: req.selectedFoodIds,
       daysCount: req.daysCount,
-      optionsPerMeal: req.optionsPerMeal,
+      optionsPerCategory: req.optionsPerCategory,
     });
 
     let savedId: string | null = null;
@@ -58,7 +58,7 @@ export class GenerateMealPlanUseCase {
         profile.id,
         goal.id,
         req.daysCount,
-        req.optionsPerMeal,
+        req.optionsPerCategory,
         req.feasibilityTags,
         req.selectedFoodIds,
         plan

@@ -178,7 +178,7 @@ model MealPlan {
   goal              Goal           @relation(fields: [goalId], references: [id])
   goalId            String
   daysCount         Int
-  optionsPerMeal    Int
+  optionsPerCategory Json
   feasibilityTags   FeasibilityTag[]
   selectedFoodIds   String[]
   generatedPlan     Json

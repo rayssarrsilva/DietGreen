@@ -1,0 +1,77 @@
+name: Layout / UI Improvement
+description: Report or propose a visual, responsive, accessibility, or UX improvement.
+title: "[UI]: "
+labels:
+  - design
+  - needs-triage
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Layout / UI Improvement
+
+        Use this template for visual design, layout,
+        responsiveness, accessibility, consistency, or usability.
+
+  - type: checkboxes
+    id: preliminary_checks
+    attributes:
+      label: Preliminary checks
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+
+  - type: textarea
+    id: current_state
+    attributes:
+      label: Current State
+      description: Describe the current visual or UX problem.
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_change
+    attributes:
+      label: Proposed Improvement
+      description: Describe what should be changed.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: category
+    attributes:
+      label: UI Category
+      options:
+        - Visual Hierarchy
+        - Spacing
+        - Typography
+        - Colors
+        - Components
+        - Responsive Design
+        - Accessibility
+        - User Experience
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: impact
+    attributes:
+      label: Perceived Impact
+      description: How significant is this issue from a user perspective?
+      options:
+        - Low
+        - Medium
+        - High
+        - Critical
+    validations:
+      required: true
+
+  - type: textarea
+    id: visual_reference
+    attributes:
+      label: Visual Reference
+      description: Add screenshots, mockups, references, or examples if applicable.
+    validations:
+      required: false

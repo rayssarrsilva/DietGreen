@@ -5,6 +5,7 @@ import type {
   FoodSubstitution,
   GeneratedPlan,
   FeasibilityTag,
+  OptionsPerCategory,
 } from "@/domain/entities/types";
 
 export interface CatalogRepository {
@@ -21,7 +22,7 @@ export interface SavedMealPlan {
   dietaryProfileSlug: string;
   goalSlug: string;
   daysCount: number;
-  optionsPerMeal: number;
+  optionsPerCategory: OptionsPerCategory;
   feasibilityTags: FeasibilityTag[];
   selectedFoodIds: string[];
   plan: GeneratedPlan;
@@ -34,7 +35,7 @@ export interface MealPlanRepository {
     dietaryProfileId: string,
     goalId: string,
     daysCount: number,
-    optionsPerMeal: number,
+    optionsPerCategory: OptionsPerCategory,
     feasibilityTags: FeasibilityTag[],
     selectedFoodIds: string[],
     plan: GeneratedPlan

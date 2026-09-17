@@ -1,0 +1,63 @@
+name: Documentation
+description: Report missing, incorrect, outdated, or unclear documentation.
+title: "[DOCS]: "
+labels:
+  - documentation
+  - needs-triage
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Documentation
+
+        Use this template for README content, setup instructions,
+        configuration, architecture, API documentation, or contribution guidelines.
+
+  - type: checkboxes
+    id: preliminary_checks
+    attributes:
+      label: Preliminary checks
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+
+  - type: dropdown
+    id: documentation_area
+    attributes:
+      label: Documentation Area
+      options:
+        - README
+        - Installation
+        - Configuration
+        - Environment Variables
+        - Architecture
+        - API Documentation
+        - Contribution Guide
+        - Other
+    validations:
+      required: true
+
+  - type: textarea
+    id: documentation_issue
+    attributes:
+      label: Documentation Issue
+      description: What is missing, incorrect, outdated, or unclear?
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_change
+    attributes:
+      label: Proposed Change
+      description: Describe what should be added or changed.
+    validations:
+      required: true
+
+  - type: textarea
+    id: references
+    attributes:
+      label: References
+      description: Add links, examples, screenshots, or other relevant references.
+    validations:
+      required: false

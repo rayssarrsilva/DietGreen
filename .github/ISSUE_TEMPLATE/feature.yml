@@ -1,0 +1,99 @@
+name: Feature Request
+description: Propose a new feature or meaningful improvement for Nutre.
+title: "[FEATURE]: "
+labels:
+  - enhancement
+  - needs-triage
+
+body:
+  - type: markdown
+    attributes:
+      value: |
+        ## Feature Request
+
+        Feature requests are reviewed before implementation.
+        Approval depends on user value, relevance, technical feasibility,
+        project scope, and alignment with Nutre's goals.
+
+  - type: checkboxes
+    id: preliminary_checks
+    attributes:
+      label: Preliminary checks
+      options:
+        - label: I searched existing issues and did not find a duplicate.
+          required: true
+        - label: This proposal is relevant to Nutre's purpose.
+          required: true
+
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem or Need
+      description: What problem does this feature solve?
+      placeholder: |
+        Currently, users...
+    validations:
+      required: true
+
+  - type: textarea
+    id: proposed_solution
+    attributes:
+      label: Proposed Solution
+      description: Describe the feature you are proposing.
+    validations:
+      required: true
+
+  - type: textarea
+    id: user_value
+    attributes:
+      label: User Value
+      description: Explain how this would improve Nutre for its users.
+    validations:
+      required: true
+
+  - type: dropdown
+    id: affected_area
+    attributes:
+      label: Affected Area
+      options:
+        - Frontend
+        - Layout / UI
+        - Authentication
+        - User Profile
+        - Dietary Preferences
+        - Menu Generation
+        - Database
+        - API
+        - Documentation
+        - Other
+    validations:
+      required: true
+
+  - type: dropdown
+    id: estimated_scope
+    attributes:
+      label: Estimated Scope
+      description: How large do you believe this change would be?
+      options:
+        - Small
+        - Medium
+        - Large
+        - Unsure
+    validations:
+      required: true
+
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives Considered
+      description: Describe alternative solutions you considered.
+    validations:
+      required: false
+
+  - type: textarea
+    id: additional_context
+    attributes:
+      label: Additional Context
+      description: Add references, screenshots, examples, or technical considerations.
+    validations:
+      required: false
