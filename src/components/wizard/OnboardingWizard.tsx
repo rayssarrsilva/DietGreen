@@ -469,12 +469,15 @@ function PlanResult({ plan, savedId }: { plan: GeneratedPlan; savedId: string | 
   return (
     <section>
       <h1 className="font-display text-2xl mb-2">Seu cardápio está pronto</h1>
+      <p className="text-sm text-ink-muted mb-2">
+        Metas diárias — não precisa bater o número exato: atingir o mínimo já é uma boa base, o ideal é o alvo.
+      </p>
       <div className="rounded-lg bg-surface p-4 mb-6 text-sm grid grid-cols-2 sm:grid-cols-5 gap-3">
-        <Metric label="Kcal/dia" value={plan.macroTarget.kcal} />
-        <Metric label="Proteína" value={`${plan.macroTarget.proteinG}g`} />
-        <Metric label="Carboidrato" value={`${plan.macroTarget.carbsG}g`} />
-        <Metric label="Gordura" value={`${plan.macroTarget.fatG}g`} />
-        <Metric label="Fibra" value={`${plan.macroTarget.fiberG}g`} />
+        <RangeMetric label="Kcal/dia" range={plan.targetRange.kcal} />
+        <RangeMetric label="Proteína" range={plan.targetRange.proteinG} unit="g" />
+        <RangeMetric label="Carboidrato" range={plan.targetRange.carbsG} unit="g" />
+        <RangeMetric label="Gordura" range={plan.targetRange.fatG} unit="g" />
+        <RangeMetric label="Fibra" range={plan.targetRange.fiberG} unit="g" />
       </div>
 
       {savedId ? (
@@ -495,7 +498,14 @@ function PlanResult({ plan, savedId }: { plan: GeneratedPlan; savedId: string | 
       <div className="space-y-8">
         {plan.days.map((day) => (
           <div key={day.day}>
-            <h2 className="font-display text-lg mb-3">Dia {day.day}</h2>
+            <h2 className="font-display text-lg mb-1">Dia {day.day}</h2>
+            <p className="text-xs text-ink-muted mb-3">
+              Total do dia: {formatAgainstRange(day.totals.kcal, plan.targetRange.kcal)} kcal ·{" "}
+              {formatAgainstRange(day.totals.proteinG, plan.targetRange.proteinG)}g proteína ·{" "}
+              {formatAgainstRange(day.totals.carbsG, plan.targetRange.carbsG)}g carboidrato ·{" "}
+              {formatAgainstRange(day.totals.fatG, plan.targetRange.fatG)}g gordura ·{" "}
+              {formatAgainstRange(day.totals.fiberG, plan.targetRange.fiberG)}g fibra
+            </p>
             <div className="grid sm:grid-cols-2 gap-4">
               {day.meals.map((meal) => (
                 <div key={meal.slot} className="rounded-lg border border-border p-3">
@@ -527,11 +537,34 @@ function PlanResult({ plan, savedId }: { plan: GeneratedPlan; savedId: string | 
   );
 }
 
-function Metric({ label, value }: { label: string; value: string | number }) {
+function RangeMetric({
+  label,
+  range,
+  unit = "",
+}: {
+  label: string;
+  range: { min: number; ideal: number };
+  unit?: string;
+}) {
   return (
     <div>
       <div className="text-xs text-ink-muted">{label}</div>
-      <div className="font-display text-lg text-primary">{value}</div>
+      <div className="font-display text-lg text-primary">
+        {range.min}
+        {unit}–{range.ideal}
+        {unit}
+      </div>
+      <div className="text-[10px] text-ink-muted">mínimo–ideal</div>
     </div>
+  );
+}
+
+// Mostra o total real do dia e sinaliza (com cor) se ficou abaixo do mínimo
+// aceitável daquela meta — é o "range" pedido na issue #3, aplicado ao que
+// o cardápio de fato entrega, não só à meta calculada.
+function formatAgainstRange(actual: number, range: { min: number; ideal: number }) {
+  const belowMin = actual < range.min;
+  return (
+    <span className={belowMin ? "text-berry font-medium" : undefined}>{actual}</span>
   );
 }
