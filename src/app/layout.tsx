@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import { Fraunces, Work_Sans } from "next/font/google";
+import { LanguageProvider } from "@/lib/i18n/LanguageContext";
+import { ThemeProvider, themeInitScript } from "@/lib/theme/ThemeContext";
 import "./globals.css";
 
 const fraunces = Fraunces({
@@ -14,19 +16,25 @@ const workSans = Work_Sans({
 });
 
 export const metadata: Metadata = {
-  title: "Nutre — cardápio sob medida para o seu perfil alimentar",
+  title: "DietGreen — meal plans built around your body and your diet",
   description:
-    "Monte um cardápio personalizado para o seu perfil alimentar (vegano, vegetariano, pescetariano e mais) e objetivo físico, com base em dados nutricionais reais.",
+    "Generate a personalized meal plan for your dietary profile (vegetarian, omnivore, and more) and physical goal, based on real nutritional data.",
 };
 
 export default function RootLayout({ children }: LayoutProps<"/">) {
   return (
     <html
+      suppressHydrationWarning
       lang="pt-BR"
       className={`${fraunces.variable} ${workSans.variable} h-full antialiased`}
     >
+      <head>
+        <script dangerouslySetInnerHTML={{ __html: themeInitScript }} />
+      </head>
       <body className="min-h-full flex flex-col bg-bg text-ink font-body">
-        {children}
+        <ThemeProvider>
+          <LanguageProvider>{children}</LanguageProvider>
+        </ThemeProvider>
       </body>
     </html>
   );
