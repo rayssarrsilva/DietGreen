@@ -157,7 +157,9 @@ export function OnboardingWizard({
         }),
       });
       const data = await res.json();
-      if (!res.ok) throw new Error(data.error ?? "Failed to generate plan");
+      if (!res.ok) {
+        throw new Error(typeof data.error === "string" ? data.error : "Failed to generate plan");
+      }
       setPlan(data.plan);
       setSavedId(data.savedId);
       setStep(5);
@@ -627,14 +629,6 @@ function PlanResult({ plan, savedId }: { plan: GeneratedPlan; savedId: string | 
   return (
     <section className="animate-fade-in-up">
       <h1 className="font-display text-2xl mb-2">{t.result.title}</h1>
-      <p className="text-sm text-ink-muted mb-2">{t.result.subtitle}</p>
-      <div className="rounded-lg bg-surface p-4 mb-6 text-sm grid grid-cols-2 sm:grid-cols-5 gap-3">
-        <RangeMetric label={t.result.kcalPerDay} range={plan.targetRange.kcal} minToIdeal={t.result.minToIdeal} />
-        <RangeMetric label={t.result.protein} range={plan.targetRange.proteinG} unit="g" minToIdeal={t.result.minToIdeal} />
-        <RangeMetric label={t.result.carbohydrate} range={plan.targetRange.carbsG} unit="g" minToIdeal={t.result.minToIdeal} />
-        <RangeMetric label={t.result.fat} range={plan.targetRange.fatG} unit="g" minToIdeal={t.result.minToIdeal} />
-        <RangeMetric label={t.result.fiber} range={plan.targetRange.fiberG} unit="g" minToIdeal={t.result.minToIdeal} />
-      </div>
 
       {savedId ? (
         <div className="flex gap-3 mb-8">
@@ -652,16 +646,9 @@ function PlanResult({ plan, savedId }: { plan: GeneratedPlan; savedId: string | 
       <div className="space-y-8">
         {plan.days.map((day, index) => (
           <div key={day.day} className="animate-fade-in-up" style={{ animationDelay: `${Math.min(index, 6) * 60}ms` }}>
-            <h2 className="font-display text-lg mb-1">
+            <h2 className="font-display text-lg mb-3">
               {t.result.day} {day.day}
             </h2>
-            <p className="text-xs text-ink-muted mb-3">
-              {t.result.dayTotal}: {formatAgainstRange(day.totals.kcal, plan.targetRange.kcal)} {t.result.kcal} ·{" "}
-              {formatAgainstRange(day.totals.proteinG, plan.targetRange.proteinG)}{t.result.proteinUnit} ·{" "}
-              {formatAgainstRange(day.totals.carbsG, plan.targetRange.carbsG)}{t.result.carbUnit} ·{" "}
-              {formatAgainstRange(day.totals.fatG, plan.targetRange.fatG)}{t.result.fatUnit} ·{" "}
-              {formatAgainstRange(day.totals.fiberG, plan.targetRange.fiberG)}{t.result.fiberUnit}
-            </p>
             <div className="grid sm:grid-cols-2 gap-4">
               {day.meals.map((meal) => (
                 <div
@@ -671,13 +658,8 @@ function PlanResult({ plan, savedId }: { plan: GeneratedPlan; savedId: string | 
                   <div className="text-sm font-medium mb-2 capitalize">{meal.slot.replace(/_/g, " ")}</div>
                   <ul className="text-sm text-ink-muted space-y-1">
                     {meal.options.map((opt, i) => (
-                      <li key={i} className="flex justify-between">
-                        <span>
-                          {opt.foodName} <span className="text-xs text-accent">({opt.category})</span>
-                        </span>
-                        <span>
-                          {opt.grams}g · {opt.kcal} kcal
-                        </span>
+                      <li key={i}>
+                        {opt.foodName} <span className="text-xs text-accent">({opt.category})</span>
                       </li>
                     ))}
                   </ul>
@@ -689,38 +671,4 @@ function PlanResult({ plan, savedId }: { plan: GeneratedPlan; savedId: string | 
       </div>
     </section>
   );
-}
-
-function RangeMetric({
-  label,
-  range,
-  unit = "",
-  minToIdeal,
-}: {
-  label: string;
-  range: { min: number; ideal: number };
-  unit?: string;
-  minToIdeal: string;
-}) {
-  return (
-    <div>
-      <div className="text-xs text-ink-muted">{label}</div>
-      <div className="font-display text-lg text-primary">
-        {range.min}
-        {unit}–{range.ideal}
-        {unit}
-      </div>
-      <div className="text-[10px] text-ink-muted">{minToIdeal}</div>
-    </div>
-  );
-}
-
-function formatAgainstRange(actual: number, range: { min: number; ideal: number; excessive: number }) {
-  const className =
-    actual < range.min
-      ? "text-accent font-medium"
-      : actual > range.excessive
-        ? "text-berry font-medium"
-        : undefined;
-  return <span className={className}>{actual}</span>;
 }

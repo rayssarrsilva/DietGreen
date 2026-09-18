@@ -11,7 +11,12 @@ const bodySchema = z.object({
     heightCm: z.number().min(100).max(250),
     age: z.number().min(14).max(100),
     sex: z.enum(["M", "F", "outro"]),
-    activityLevel: z.enum(["sedentario", "leve", "moderado", "intenso", "atleta"]),
+    dailyActivityLevel: z.enum(["sedentaria", "pouco_ativa", "ativa"]),
+    trainingSessionsPerWeek: z.number().min(0).max(14),
+    trainingSessionDurationMin: z.number().min(0).max(300),
+    trainingIntensity: z.enum(["leve", "moderada", "intensa"]),
+    desiredWeightKg: z.number().min(30).max(300).optional(),
+    avgDailySteps: z.number().min(0).max(50000).optional(),
   }),
   feasibilityTags: z.array(
     z.enum(["BAIXO_CUSTO", "MEDIO_CUSTO", "ALTO_CUSTO", "FACIL_DE_ACHAR", "ESPECIALIZADO"])
@@ -27,23 +32,27 @@ const bodySchema = z.object({
 });
 
 export async function POST(req: NextRequest) {
-  const session = await auth();
-  const json = await req.json();
-  const parsed = bodySchema.safeParse(json);
-
-  if (!parsed.success) {
-    return NextResponse.json({ error: parsed.error.flatten() }, { status: 400 });
-  }
-
   try {
+    const session = await auth();
+    const json = await req.json();
+    const parsed = bodySchema.safeParse(json);
+
+    if (!parsed.success) {
+      const message = parsed.error.issues
+        .map((issue) => `${issue.path.join(".") || "body"}: ${issue.message}`)
+        .join("; ");
+      return NextResponse.json({ error: message }, { status: 400 });
+    }
+
     const { plan, savedId } = await generateMealPlanUseCase.execute({
       userId: session?.user?.id,
       ...parsed.data,
     });
     return NextResponse.json({ plan, savedId });
   } catch (err) {
+    console.error("POST /api/plans failed", err);
     const message = err instanceof Error ? err.message : "Erro ao gerar cardápio";
-    return NextResponse.json({ error: message }, { status: 400 });
+    return NextResponse.json({ error: message }, { status: 500 });
   }
 }
 
