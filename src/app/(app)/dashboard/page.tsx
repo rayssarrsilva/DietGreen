@@ -35,7 +35,7 @@ export default async function DashboardPage() {
                   {p.dietaryProfileSlug.replace(/-/g, " ")} · {p.goalSlug.replace(/-/g, " ")}
                 </div>
                 <div className="text-sm text-ink-muted">
-                  {p.daysCount} dias · {p.plan.macroTarget.kcal} kcal/dia · gerado em{" "}
+                  {p.daysCount} dias · {p.plan.macroTarget.targetCalories} kcal/dia · gerado em{" "}
                   {new Date(p.createdAt).toLocaleDateString("pt-BR")}
                 </div>
               </div>
