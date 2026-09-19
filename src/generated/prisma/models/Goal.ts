@@ -30,6 +30,7 @@ export type GoalAvgAggregateOutputType = {
   proteinGKgMin: number | null
   proteinGKgMax: number | null
   calorieAdjustmentPct: number | null
+  fatPctOfCalories: number | null
   sortOrder: number | null
 }
 
@@ -37,6 +38,7 @@ export type GoalSumAggregateOutputType = {
   proteinGKgMin: number | null
   proteinGKgMax: number | null
   calorieAdjustmentPct: number | null
+  fatPctOfCalories: number | null
   sortOrder: number | null
 }
 
@@ -49,6 +51,7 @@ export type GoalMinAggregateOutputType = {
   proteinGKgMin: number | null
   proteinGKgMax: number | null
   calorieAdjustmentPct: number | null
+  fatPctOfCalories: number | null
   sortOrder: number | null
 }
 
@@ -61,6 +64,7 @@ export type GoalMaxAggregateOutputType = {
   proteinGKgMin: number | null
   proteinGKgMax: number | null
   calorieAdjustmentPct: number | null
+  fatPctOfCalories: number | null
   sortOrder: number | null
 }
 
@@ -73,6 +77,7 @@ export type GoalCountAggregateOutputType = {
   proteinGKgMin: number
   proteinGKgMax: number
   calorieAdjustmentPct: number
+  fatPctOfCalories: number
   sortOrder: number
   _all: number
 }
@@ -82,6 +87,7 @@ export type GoalAvgAggregateInputType = {
   proteinGKgMin?: true
   proteinGKgMax?: true
   calorieAdjustmentPct?: true
+  fatPctOfCalories?: true
   sortOrder?: true
 }
 
@@ -89,6 +95,7 @@ export type GoalSumAggregateInputType = {
   proteinGKgMin?: true
   proteinGKgMax?: true
   calorieAdjustmentPct?: true
+  fatPctOfCalories?: true
   sortOrder?: true
 }
 
@@ -101,6 +108,7 @@ export type GoalMinAggregateInputType = {
   proteinGKgMin?: true
   proteinGKgMax?: true
   calorieAdjustmentPct?: true
+  fatPctOfCalories?: true
   sortOrder?: true
 }
 
@@ -113,6 +121,7 @@ export type GoalMaxAggregateInputType = {
   proteinGKgMin?: true
   proteinGKgMax?: true
   calorieAdjustmentPct?: true
+  fatPctOfCalories?: true
   sortOrder?: true
 }
 
@@ -125,6 +134,7 @@ export type GoalCountAggregateInputType = {
   proteinGKgMin?: true
   proteinGKgMax?: true
   calorieAdjustmentPct?: true
+  fatPctOfCalories?: true
   sortOrder?: true
   _all?: true
 }
@@ -224,6 +234,7 @@ export type GoalGroupByOutputType = {
   proteinGKgMin: number
   proteinGKgMax: number
   calorieAdjustmentPct: number
+  fatPctOfCalories: number
   sortOrder: number
   _count: GoalCountAggregateOutputType | null
   _avg: GoalAvgAggregateOutputType | null
@@ -259,6 +270,7 @@ export type GoalWhereInput = {
   proteinGKgMin?: Prisma.FloatFilter<"Goal"> | number
   proteinGKgMax?: Prisma.FloatFilter<"Goal"> | number
   calorieAdjustmentPct?: Prisma.FloatFilter<"Goal"> | number
+  fatPctOfCalories?: Prisma.FloatFilter<"Goal"> | number
   sortOrder?: Prisma.IntFilter<"Goal"> | number
   plans?: Prisma.MealPlanListRelationFilter
 }
@@ -272,6 +284,7 @@ export type GoalOrderByWithRelationInput = {
   proteinGKgMin?: Prisma.SortOrder
   proteinGKgMax?: Prisma.SortOrder
   calorieAdjustmentPct?: Prisma.SortOrder
+  fatPctOfCalories?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   plans?: Prisma.MealPlanOrderByRelationAggregateInput
 }
@@ -288,6 +301,7 @@ export type GoalWhereUniqueInput = Prisma.AtLeast<{
   proteinGKgMin?: Prisma.FloatFilter<"Goal"> | number
   proteinGKgMax?: Prisma.FloatFilter<"Goal"> | number
   calorieAdjustmentPct?: Prisma.FloatFilter<"Goal"> | number
+  fatPctOfCalories?: Prisma.FloatFilter<"Goal"> | number
   sortOrder?: Prisma.IntFilter<"Goal"> | number
   plans?: Prisma.MealPlanListRelationFilter
 }, "id" | "slug">
@@ -301,6 +315,7 @@ export type GoalOrderByWithAggregationInput = {
   proteinGKgMin?: Prisma.SortOrder
   proteinGKgMax?: Prisma.SortOrder
   calorieAdjustmentPct?: Prisma.SortOrder
+  fatPctOfCalories?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
   _count?: Prisma.GoalCountOrderByAggregateInput
   _avg?: Prisma.GoalAvgOrderByAggregateInput
@@ -321,6 +336,7 @@ export type GoalScalarWhereWithAggregatesInput = {
   proteinGKgMin?: Prisma.FloatWithAggregatesFilter<"Goal"> | number
   proteinGKgMax?: Prisma.FloatWithAggregatesFilter<"Goal"> | number
   calorieAdjustmentPct?: Prisma.FloatWithAggregatesFilter<"Goal"> | number
+  fatPctOfCalories?: Prisma.FloatWithAggregatesFilter<"Goal"> | number
   sortOrder?: Prisma.IntWithAggregatesFilter<"Goal"> | number
 }
 
@@ -333,6 +349,7 @@ export type GoalCreateInput = {
   proteinGKgMin: number
   proteinGKgMax: number
   calorieAdjustmentPct: number
+  fatPctOfCalories?: number
   sortOrder?: number
   plans?: Prisma.MealPlanCreateNestedManyWithoutGoalInput
 }
@@ -346,6 +363,7 @@ export type GoalUncheckedCreateInput = {
   proteinGKgMin: number
   proteinGKgMax: number
   calorieAdjustmentPct: number
+  fatPctOfCalories?: number
   sortOrder?: number
   plans?: Prisma.MealPlanUncheckedCreateNestedManyWithoutGoalInput
 }
@@ -359,6 +377,7 @@ export type GoalUpdateInput = {
   proteinGKgMin?: Prisma.FloatFieldUpdateOperationsInput | number
   proteinGKgMax?: Prisma.FloatFieldUpdateOperationsInput | number
   calorieAdjustmentPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  fatPctOfCalories?: Prisma.FloatFieldUpdateOperationsInput | number
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   plans?: Prisma.MealPlanUpdateManyWithoutGoalNestedInput
 }
@@ -372,6 +391,7 @@ export type GoalUncheckedUpdateInput = {
   proteinGKgMin?: Prisma.FloatFieldUpdateOperationsInput | number
   proteinGKgMax?: Prisma.FloatFieldUpdateOperationsInput | number
   calorieAdjustmentPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  fatPctOfCalories?: Prisma.FloatFieldUpdateOperationsInput | number
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
   plans?: Prisma.MealPlanUncheckedUpdateManyWithoutGoalNestedInput
 }
@@ -385,6 +405,7 @@ export type GoalCreateManyInput = {
   proteinGKgMin: number
   proteinGKgMax: number
   calorieAdjustmentPct: number
+  fatPctOfCalories?: number
   sortOrder?: number
 }
 
@@ -397,6 +418,7 @@ export type GoalUpdateManyMutationInput = {
   proteinGKgMin?: Prisma.FloatFieldUpdateOperationsInput | number
   proteinGKgMax?: Prisma.FloatFieldUpdateOperationsInput | number
   calorieAdjustmentPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  fatPctOfCalories?: Prisma.FloatFieldUpdateOperationsInput | number
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -409,6 +431,7 @@ export type GoalUncheckedUpdateManyInput = {
   proteinGKgMin?: Prisma.FloatFieldUpdateOperationsInput | number
   proteinGKgMax?: Prisma.FloatFieldUpdateOperationsInput | number
   calorieAdjustmentPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  fatPctOfCalories?: Prisma.FloatFieldUpdateOperationsInput | number
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -421,6 +444,7 @@ export type GoalCountOrderByAggregateInput = {
   proteinGKgMin?: Prisma.SortOrder
   proteinGKgMax?: Prisma.SortOrder
   calorieAdjustmentPct?: Prisma.SortOrder
+  fatPctOfCalories?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
 }
 
@@ -428,6 +452,7 @@ export type GoalAvgOrderByAggregateInput = {
   proteinGKgMin?: Prisma.SortOrder
   proteinGKgMax?: Prisma.SortOrder
   calorieAdjustmentPct?: Prisma.SortOrder
+  fatPctOfCalories?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
 }
 
@@ -440,6 +465,7 @@ export type GoalMaxOrderByAggregateInput = {
   proteinGKgMin?: Prisma.SortOrder
   proteinGKgMax?: Prisma.SortOrder
   calorieAdjustmentPct?: Prisma.SortOrder
+  fatPctOfCalories?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
 }
 
@@ -452,6 +478,7 @@ export type GoalMinOrderByAggregateInput = {
   proteinGKgMin?: Prisma.SortOrder
   proteinGKgMax?: Prisma.SortOrder
   calorieAdjustmentPct?: Prisma.SortOrder
+  fatPctOfCalories?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
 }
 
@@ -459,6 +486,7 @@ export type GoalSumOrderByAggregateInput = {
   proteinGKgMin?: Prisma.SortOrder
   proteinGKgMax?: Prisma.SortOrder
   calorieAdjustmentPct?: Prisma.SortOrder
+  fatPctOfCalories?: Prisma.SortOrder
   sortOrder?: Prisma.SortOrder
 }
 
@@ -498,6 +526,7 @@ export type GoalCreateWithoutPlansInput = {
   proteinGKgMin: number
   proteinGKgMax: number
   calorieAdjustmentPct: number
+  fatPctOfCalories?: number
   sortOrder?: number
 }
 
@@ -510,6 +539,7 @@ export type GoalUncheckedCreateWithoutPlansInput = {
   proteinGKgMin: number
   proteinGKgMax: number
   calorieAdjustmentPct: number
+  fatPctOfCalories?: number
   sortOrder?: number
 }
 
@@ -538,6 +568,7 @@ export type GoalUpdateWithoutPlansInput = {
   proteinGKgMin?: Prisma.FloatFieldUpdateOperationsInput | number
   proteinGKgMax?: Prisma.FloatFieldUpdateOperationsInput | number
   calorieAdjustmentPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  fatPctOfCalories?: Prisma.FloatFieldUpdateOperationsInput | number
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -550,6 +581,7 @@ export type GoalUncheckedUpdateWithoutPlansInput = {
   proteinGKgMin?: Prisma.FloatFieldUpdateOperationsInput | number
   proteinGKgMax?: Prisma.FloatFieldUpdateOperationsInput | number
   calorieAdjustmentPct?: Prisma.FloatFieldUpdateOperationsInput | number
+  fatPctOfCalories?: Prisma.FloatFieldUpdateOperationsInput | number
   sortOrder?: Prisma.IntFieldUpdateOperationsInput | number
 }
 
@@ -593,6 +625,7 @@ export type GoalSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs = r
   proteinGKgMin?: boolean
   proteinGKgMax?: boolean
   calorieAdjustmentPct?: boolean
+  fatPctOfCalories?: boolean
   sortOrder?: boolean
   plans?: boolean | Prisma.Goal$plansArgs<ExtArgs>
   _count?: boolean | Prisma.GoalCountOutputTypeDefaultArgs<ExtArgs>
@@ -607,6 +640,7 @@ export type GoalSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   proteinGKgMin?: boolean
   proteinGKgMax?: boolean
   calorieAdjustmentPct?: boolean
+  fatPctOfCalories?: boolean
   sortOrder?: boolean
 }, ExtArgs["result"]["goal"]>
 
@@ -619,6 +653,7 @@ export type GoalSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Extensio
   proteinGKgMin?: boolean
   proteinGKgMax?: boolean
   calorieAdjustmentPct?: boolean
+  fatPctOfCalories?: boolean
   sortOrder?: boolean
 }, ExtArgs["result"]["goal"]>
 
@@ -631,10 +666,11 @@ export type GoalSelectScalar = {
   proteinGKgMin?: boolean
   proteinGKgMax?: boolean
   calorieAdjustmentPct?: boolean
+  fatPctOfCalories?: boolean
   sortOrder?: boolean
 }
 
-export type GoalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "name" | "shortDesc" | "longDesc" | "proteinGKgMin" | "proteinGKgMax" | "calorieAdjustmentPct" | "sortOrder", ExtArgs["result"]["goal"]>
+export type GoalOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "slug" | "name" | "shortDesc" | "longDesc" | "proteinGKgMin" | "proteinGKgMax" | "calorieAdjustmentPct" | "fatPctOfCalories" | "sortOrder", ExtArgs["result"]["goal"]>
 export type GoalInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   plans?: boolean | Prisma.Goal$plansArgs<ExtArgs>
   _count?: boolean | Prisma.GoalCountOutputTypeDefaultArgs<ExtArgs>
@@ -656,6 +692,7 @@ export type $GoalPayload<ExtArgs extends runtime.Types.Extensions.InternalArgs =
     proteinGKgMin: number
     proteinGKgMax: number
     calorieAdjustmentPct: number
+    fatPctOfCalories: number
     sortOrder: number
   }, ExtArgs["result"]["goal"]>
   composites: {}
@@ -1089,6 +1126,7 @@ export interface GoalFieldRefs {
   readonly proteinGKgMin: Prisma.FieldRef<"Goal", 'Float'>
   readonly proteinGKgMax: Prisma.FieldRef<"Goal", 'Float'>
   readonly calorieAdjustmentPct: Prisma.FieldRef<"Goal", 'Float'>
+  readonly fatPctOfCalories: Prisma.FieldRef<"Goal", 'Float'>
   readonly sortOrder: Prisma.FieldRef<"Goal", 'Int'>
 }
     

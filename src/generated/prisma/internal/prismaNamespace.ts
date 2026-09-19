@@ -1293,6 +1293,7 @@ export const GoalScalarFieldEnum = {
   proteinGKgMin: 'proteinGKgMin',
   proteinGKgMax: 'proteinGKgMax',
   calorieAdjustmentPct: 'calorieAdjustmentPct',
+  fatPctOfCalories: 'fatPctOfCalories',
   sortOrder: 'sortOrder'
 } as const
 
@@ -1343,7 +1344,7 @@ export const MealPlanScalarFieldEnum = {
   dietaryProfileId: 'dietaryProfileId',
   goalId: 'goalId',
   daysCount: 'daysCount',
-  optionsPerMeal: 'optionsPerMeal',
+  optionsPerCategory: 'optionsPerCategory',
   feasibilityTags: 'feasibilityTags',
   selectedFoodIds: 'selectedFoodIds',
   generatedPlan: 'generatedPlan',

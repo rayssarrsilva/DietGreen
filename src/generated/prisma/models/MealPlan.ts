@@ -28,12 +28,10 @@ export type AggregateMealPlan = {
 
 export type MealPlanAvgAggregateOutputType = {
   daysCount: number | null
-  optionsPerMeal: number | null
 }
 
 export type MealPlanSumAggregateOutputType = {
   daysCount: number | null
-  optionsPerMeal: number | null
 }
 
 export type MealPlanMinAggregateOutputType = {
@@ -42,7 +40,6 @@ export type MealPlanMinAggregateOutputType = {
   dietaryProfileId: string | null
   goalId: string | null
   daysCount: number | null
-  optionsPerMeal: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -53,7 +50,6 @@ export type MealPlanMaxAggregateOutputType = {
   dietaryProfileId: string | null
   goalId: string | null
   daysCount: number | null
-  optionsPerMeal: number | null
   createdAt: Date | null
   updatedAt: Date | null
 }
@@ -64,7 +60,7 @@ export type MealPlanCountAggregateOutputType = {
   dietaryProfileId: number
   goalId: number
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: number
   feasibilityTags: number
   selectedFoodIds: number
   generatedPlan: number
@@ -76,12 +72,10 @@ export type MealPlanCountAggregateOutputType = {
 
 export type MealPlanAvgAggregateInputType = {
   daysCount?: true
-  optionsPerMeal?: true
 }
 
 export type MealPlanSumAggregateInputType = {
   daysCount?: true
-  optionsPerMeal?: true
 }
 
 export type MealPlanMinAggregateInputType = {
@@ -90,7 +84,6 @@ export type MealPlanMinAggregateInputType = {
   dietaryProfileId?: true
   goalId?: true
   daysCount?: true
-  optionsPerMeal?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -101,7 +94,6 @@ export type MealPlanMaxAggregateInputType = {
   dietaryProfileId?: true
   goalId?: true
   daysCount?: true
-  optionsPerMeal?: true
   createdAt?: true
   updatedAt?: true
 }
@@ -112,7 +104,7 @@ export type MealPlanCountAggregateInputType = {
   dietaryProfileId?: true
   goalId?: true
   daysCount?: true
-  optionsPerMeal?: true
+  optionsPerCategory?: true
   feasibilityTags?: true
   selectedFoodIds?: true
   generatedPlan?: true
@@ -213,7 +205,7 @@ export type MealPlanGroupByOutputType = {
   dietaryProfileId: string
   goalId: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: runtime.JsonValue
   feasibilityTags: $Enums.FeasibilityTag[]
   selectedFoodIds: string[]
   generatedPlan: runtime.JsonValue
@@ -250,7 +242,7 @@ export type MealPlanWhereInput = {
   dietaryProfileId?: Prisma.StringFilter<"MealPlan"> | string
   goalId?: Prisma.StringFilter<"MealPlan"> | string
   daysCount?: Prisma.IntFilter<"MealPlan"> | number
-  optionsPerMeal?: Prisma.IntFilter<"MealPlan"> | number
+  optionsPerCategory?: Prisma.JsonFilter<"MealPlan">
   feasibilityTags?: Prisma.EnumFeasibilityTagNullableListFilter<"MealPlan">
   selectedFoodIds?: Prisma.StringNullableListFilter<"MealPlan">
   generatedPlan?: Prisma.JsonFilter<"MealPlan">
@@ -267,7 +259,7 @@ export type MealPlanOrderByWithRelationInput = {
   dietaryProfileId?: Prisma.SortOrder
   goalId?: Prisma.SortOrder
   daysCount?: Prisma.SortOrder
-  optionsPerMeal?: Prisma.SortOrder
+  optionsPerCategory?: Prisma.SortOrder
   feasibilityTags?: Prisma.SortOrder
   selectedFoodIds?: Prisma.SortOrder
   generatedPlan?: Prisma.SortOrder
@@ -287,7 +279,7 @@ export type MealPlanWhereUniqueInput = Prisma.AtLeast<{
   dietaryProfileId?: Prisma.StringFilter<"MealPlan"> | string
   goalId?: Prisma.StringFilter<"MealPlan"> | string
   daysCount?: Prisma.IntFilter<"MealPlan"> | number
-  optionsPerMeal?: Prisma.IntFilter<"MealPlan"> | number
+  optionsPerCategory?: Prisma.JsonFilter<"MealPlan">
   feasibilityTags?: Prisma.EnumFeasibilityTagNullableListFilter<"MealPlan">
   selectedFoodIds?: Prisma.StringNullableListFilter<"MealPlan">
   generatedPlan?: Prisma.JsonFilter<"MealPlan">
@@ -304,7 +296,7 @@ export type MealPlanOrderByWithAggregationInput = {
   dietaryProfileId?: Prisma.SortOrder
   goalId?: Prisma.SortOrder
   daysCount?: Prisma.SortOrder
-  optionsPerMeal?: Prisma.SortOrder
+  optionsPerCategory?: Prisma.SortOrder
   feasibilityTags?: Prisma.SortOrder
   selectedFoodIds?: Prisma.SortOrder
   generatedPlan?: Prisma.SortOrder
@@ -326,7 +318,7 @@ export type MealPlanScalarWhereWithAggregatesInput = {
   dietaryProfileId?: Prisma.StringWithAggregatesFilter<"MealPlan"> | string
   goalId?: Prisma.StringWithAggregatesFilter<"MealPlan"> | string
   daysCount?: Prisma.IntWithAggregatesFilter<"MealPlan"> | number
-  optionsPerMeal?: Prisma.IntWithAggregatesFilter<"MealPlan"> | number
+  optionsPerCategory?: Prisma.JsonWithAggregatesFilter<"MealPlan">
   feasibilityTags?: Prisma.EnumFeasibilityTagNullableListFilter<"MealPlan">
   selectedFoodIds?: Prisma.StringNullableListFilter<"MealPlan">
   generatedPlan?: Prisma.JsonWithAggregatesFilter<"MealPlan">
@@ -337,7 +329,7 @@ export type MealPlanScalarWhereWithAggregatesInput = {
 export type MealPlanCreateInput = {
   id?: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanCreateselectedFoodIdsInput | string[]
   generatedPlan: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -354,7 +346,7 @@ export type MealPlanUncheckedCreateInput = {
   dietaryProfileId: string
   goalId: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanCreateselectedFoodIdsInput | string[]
   generatedPlan: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -365,7 +357,7 @@ export type MealPlanUncheckedCreateInput = {
 export type MealPlanUpdateInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -382,7 +374,7 @@ export type MealPlanUncheckedUpdateInput = {
   dietaryProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   goalId?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -396,7 +388,7 @@ export type MealPlanCreateManyInput = {
   dietaryProfileId: string
   goalId: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanCreateselectedFoodIdsInput | string[]
   generatedPlan: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -407,7 +399,7 @@ export type MealPlanCreateManyInput = {
 export type MealPlanUpdateManyMutationInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -421,7 +413,7 @@ export type MealPlanUncheckedUpdateManyInput = {
   dietaryProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   goalId?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -445,7 +437,7 @@ export type MealPlanCountOrderByAggregateInput = {
   dietaryProfileId?: Prisma.SortOrder
   goalId?: Prisma.SortOrder
   daysCount?: Prisma.SortOrder
-  optionsPerMeal?: Prisma.SortOrder
+  optionsPerCategory?: Prisma.SortOrder
   feasibilityTags?: Prisma.SortOrder
   selectedFoodIds?: Prisma.SortOrder
   generatedPlan?: Prisma.SortOrder
@@ -455,7 +447,6 @@ export type MealPlanCountOrderByAggregateInput = {
 
 export type MealPlanAvgOrderByAggregateInput = {
   daysCount?: Prisma.SortOrder
-  optionsPerMeal?: Prisma.SortOrder
 }
 
 export type MealPlanMaxOrderByAggregateInput = {
@@ -464,7 +455,6 @@ export type MealPlanMaxOrderByAggregateInput = {
   dietaryProfileId?: Prisma.SortOrder
   goalId?: Prisma.SortOrder
   daysCount?: Prisma.SortOrder
-  optionsPerMeal?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
@@ -475,14 +465,12 @@ export type MealPlanMinOrderByAggregateInput = {
   dietaryProfileId?: Prisma.SortOrder
   goalId?: Prisma.SortOrder
   daysCount?: Prisma.SortOrder
-  optionsPerMeal?: Prisma.SortOrder
   createdAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
 export type MealPlanSumOrderByAggregateInput = {
   daysCount?: Prisma.SortOrder
-  optionsPerMeal?: Prisma.SortOrder
 }
 
 export type MealPlanCreateNestedManyWithoutUserInput = {
@@ -632,7 +620,7 @@ export type MealPlanUpdateselectedFoodIdsInput = {
 export type MealPlanCreateWithoutUserInput = {
   id?: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanCreateselectedFoodIdsInput | string[]
   generatedPlan: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -647,7 +635,7 @@ export type MealPlanUncheckedCreateWithoutUserInput = {
   dietaryProfileId: string
   goalId: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanCreateselectedFoodIdsInput | string[]
   generatedPlan: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -690,7 +678,7 @@ export type MealPlanScalarWhereInput = {
   dietaryProfileId?: Prisma.StringFilter<"MealPlan"> | string
   goalId?: Prisma.StringFilter<"MealPlan"> | string
   daysCount?: Prisma.IntFilter<"MealPlan"> | number
-  optionsPerMeal?: Prisma.IntFilter<"MealPlan"> | number
+  optionsPerCategory?: Prisma.JsonFilter<"MealPlan">
   feasibilityTags?: Prisma.EnumFeasibilityTagNullableListFilter<"MealPlan">
   selectedFoodIds?: Prisma.StringNullableListFilter<"MealPlan">
   generatedPlan?: Prisma.JsonFilter<"MealPlan">
@@ -701,7 +689,7 @@ export type MealPlanScalarWhereInput = {
 export type MealPlanCreateWithoutDietaryProfileInput = {
   id?: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanCreateselectedFoodIdsInput | string[]
   generatedPlan: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -716,7 +704,7 @@ export type MealPlanUncheckedCreateWithoutDietaryProfileInput = {
   userId: string
   goalId: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanCreateselectedFoodIdsInput | string[]
   generatedPlan: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -753,7 +741,7 @@ export type MealPlanUpdateManyWithWhereWithoutDietaryProfileInput = {
 export type MealPlanCreateWithoutGoalInput = {
   id?: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanCreateselectedFoodIdsInput | string[]
   generatedPlan: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -768,7 +756,7 @@ export type MealPlanUncheckedCreateWithoutGoalInput = {
   userId: string
   dietaryProfileId: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanCreateselectedFoodIdsInput | string[]
   generatedPlan: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -807,7 +795,7 @@ export type MealPlanCreateManyUserInput = {
   dietaryProfileId: string
   goalId: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanCreateselectedFoodIdsInput | string[]
   generatedPlan: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -818,7 +806,7 @@ export type MealPlanCreateManyUserInput = {
 export type MealPlanUpdateWithoutUserInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -833,7 +821,7 @@ export type MealPlanUncheckedUpdateWithoutUserInput = {
   dietaryProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   goalId?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -846,7 +834,7 @@ export type MealPlanUncheckedUpdateManyWithoutUserInput = {
   dietaryProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   goalId?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -859,7 +847,7 @@ export type MealPlanCreateManyDietaryProfileInput = {
   userId: string
   goalId: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanCreateselectedFoodIdsInput | string[]
   generatedPlan: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -870,7 +858,7 @@ export type MealPlanCreateManyDietaryProfileInput = {
 export type MealPlanUpdateWithoutDietaryProfileInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -885,7 +873,7 @@ export type MealPlanUncheckedUpdateWithoutDietaryProfileInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   goalId?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -898,7 +886,7 @@ export type MealPlanUncheckedUpdateManyWithoutDietaryProfileInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   goalId?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -911,7 +899,7 @@ export type MealPlanCreateManyGoalInput = {
   userId: string
   dietaryProfileId: string
   daysCount: number
-  optionsPerMeal: number
+  optionsPerCategory: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanCreateselectedFoodIdsInput | string[]
   generatedPlan: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -922,7 +910,7 @@ export type MealPlanCreateManyGoalInput = {
 export type MealPlanUpdateWithoutGoalInput = {
   id?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -937,7 +925,7 @@ export type MealPlanUncheckedUpdateWithoutGoalInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   dietaryProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -950,7 +938,7 @@ export type MealPlanUncheckedUpdateManyWithoutGoalInput = {
   userId?: Prisma.StringFieldUpdateOperationsInput | string
   dietaryProfileId?: Prisma.StringFieldUpdateOperationsInput | string
   daysCount?: Prisma.IntFieldUpdateOperationsInput | number
-  optionsPerMeal?: Prisma.IntFieldUpdateOperationsInput | number
+  optionsPerCategory?: Prisma.JsonNullValueInput | runtime.InputJsonValue
   feasibilityTags?: Prisma.MealPlanUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
   selectedFoodIds?: Prisma.MealPlanUpdateselectedFoodIdsInput | string[]
   generatedPlan?: Prisma.JsonNullValueInput | runtime.InputJsonValue
@@ -966,7 +954,7 @@ export type MealPlanSelect<ExtArgs extends runtime.Types.Extensions.InternalArgs
   dietaryProfileId?: boolean
   goalId?: boolean
   daysCount?: boolean
-  optionsPerMeal?: boolean
+  optionsPerCategory?: boolean
   feasibilityTags?: boolean
   selectedFoodIds?: boolean
   generatedPlan?: boolean
@@ -983,7 +971,7 @@ export type MealPlanSelectCreateManyAndReturn<ExtArgs extends runtime.Types.Exte
   dietaryProfileId?: boolean
   goalId?: boolean
   daysCount?: boolean
-  optionsPerMeal?: boolean
+  optionsPerCategory?: boolean
   feasibilityTags?: boolean
   selectedFoodIds?: boolean
   generatedPlan?: boolean
@@ -1000,7 +988,7 @@ export type MealPlanSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.Exte
   dietaryProfileId?: boolean
   goalId?: boolean
   daysCount?: boolean
-  optionsPerMeal?: boolean
+  optionsPerCategory?: boolean
   feasibilityTags?: boolean
   selectedFoodIds?: boolean
   generatedPlan?: boolean
@@ -1017,7 +1005,7 @@ export type MealPlanSelectScalar = {
   dietaryProfileId?: boolean
   goalId?: boolean
   daysCount?: boolean
-  optionsPerMeal?: boolean
+  optionsPerCategory?: boolean
   feasibilityTags?: boolean
   selectedFoodIds?: boolean
   generatedPlan?: boolean
@@ -1025,7 +1013,7 @@ export type MealPlanSelectScalar = {
   updatedAt?: boolean
 }
 
-export type MealPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "dietaryProfileId" | "goalId" | "daysCount" | "optionsPerMeal" | "feasibilityTags" | "selectedFoodIds" | "generatedPlan" | "createdAt" | "updatedAt", ExtArgs["result"]["mealPlan"]>
+export type MealPlanOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "dietaryProfileId" | "goalId" | "daysCount" | "optionsPerCategory" | "feasibilityTags" | "selectedFoodIds" | "generatedPlan" | "createdAt" | "updatedAt", ExtArgs["result"]["mealPlan"]>
 export type MealPlanInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
   dietaryProfile?: boolean | Prisma.DietaryProfileDefaultArgs<ExtArgs>
@@ -1055,7 +1043,7 @@ export type $MealPlanPayload<ExtArgs extends runtime.Types.Extensions.InternalAr
     dietaryProfileId: string
     goalId: string
     daysCount: number
-    optionsPerMeal: number
+    optionsPerCategory: runtime.JsonValue
     feasibilityTags: $Enums.FeasibilityTag[]
     selectedFoodIds: string[]
     generatedPlan: runtime.JsonValue
@@ -1492,7 +1480,7 @@ export interface MealPlanFieldRefs {
   readonly dietaryProfileId: Prisma.FieldRef<"MealPlan", 'String'>
   readonly goalId: Prisma.FieldRef<"MealPlan", 'String'>
   readonly daysCount: Prisma.FieldRef<"MealPlan", 'Int'>
-  readonly optionsPerMeal: Prisma.FieldRef<"MealPlan", 'Int'>
+  readonly optionsPerCategory: Prisma.FieldRef<"MealPlan", 'Json'>
   readonly feasibilityTags: Prisma.FieldRef<"MealPlan", 'FeasibilityTag[]'>
   readonly selectedFoodIds: Prisma.FieldRef<"MealPlan", 'String[]'>
   readonly generatedPlan: Prisma.FieldRef<"MealPlan", 'Json'>
