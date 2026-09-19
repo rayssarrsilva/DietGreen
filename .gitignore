@@ -9,3 +9,5 @@ yarn-error.log*
 .env.local
 .env.*.local
 links.txt
+
+info.txt
