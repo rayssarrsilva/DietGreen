@@ -21,7 +21,7 @@ export const metadata: Metadata = {
     "Generate a personalized meal plan for your dietary profile (vegetarian, omnivore, and more) and physical goal, based on real nutritional data.",
 };
 
-export default function RootLayout({ children }: LayoutProps<"/">) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
       suppressHydrationWarning
