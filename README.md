@@ -2,511 +2,156 @@
 
 [🇺🇸 English](#english) · [🇧🇷 Português](#português)
 
-**Live Demo:** https://diet-app-3iyl.onrender.com/
+**Live:** https://diet-app-3iyl.onrender.com/
 
 ---
 
 # English
 
-## Description
+Web app that suggests which foods to include in your meals, based on your dietary profile (vegetarian or omnivore, with 10 more specific variants available) and physical goal. Built with Next.js, Prisma, and PostgreSQL.
 
-DietGreen is a responsive web application for generating personalized meal plans based on dietary profiles, physical goals, and nutritional requirements.
+## Status
 
-The application supports **10 dietary profile options**, including vegan, vegetarian, lacto-vegetarian, pescetarian, and custom profiles. Users can combine their dietary preferences with goals such as muscle gain, weight loss, bulking, and cutting.
-
-Generated meal plans include nutritional information, macronutrient calculations, and ranked food substitutions based on nutritional suitability. The system also considers economic and local food availability when selecting alternatives.
-
-Users can export their meal plans as **PDF or Excel (.xlsx)** files.
-
-Authentication is optional and is integrated with **Google OAuth and GitHub OAuth** through Auth.js. Authenticated users can save and access their meal plans across sessions.
-
-## Demo
-
-<img width="1920" height="881" alt="dietapp1" src="https://github.com/user-attachments/assets/4da49f94-49a7-4bc2-8b71-739dad4a62fc" />
-
+MVP in active development. **Features** below are live. **Roadmap** is not built yet.
 
 ## Features
+- Vegetarian / omnivore quick pick, with 10 more specific profiles underneath
+- Goal-based plan: maintenance, muscle gain, weight loss, bulking, cutting
+- Food suggestions by category (protein, carbs, fats, fiber) — no calorie or gram totals shown yet, to avoid displaying unverified numbers
+- Adjustable variety per category (5–20 options rotating through the plan)
+- PDF and Excel export
+- Google / GitHub sign-in, with saved plan history
+- Light/dark theme, Portuguese/English interface
+- Responsive (mobile, tablet, desktop)
 
-* Personalized meal plan generation
-* 10 dietary profile options
-* Multiple physical and nutritional goals
-* Calorie and macronutrient calculations
-* Ranked nutritional food substitutions
-* Economic and local food considerations
-* PDF meal plan export
-* Excel (.xlsx) meal plan export
-* Google OAuth authentication
-* GitHub OAuth authentication
-* User-specific meal plan persistence
-* Responsive interface
-* Input validation with Zod
-
-## How to Use
-
-1. Open the [live application](https://diet-app-3iyl.onrender.com/).
-2. Select your dietary profile.
-3. Select your physical goal.
-4. Enter the requested information.
-5. Generate your personalized meal plan.
-6. Review the meals and nutritional information.
-7. Use the suggested substitutions when needed.
-8. Export your plan to PDF or Excel.
-9. Sign in with Google or GitHub if you want to save your meal plans.
-
-Authentication is optional. The application can generate meal plans without an account, but persistent user-specific storage requires authentication.
+## Roadmap
+- Verified nutritional values per food and per plan
+- Public user profiles
+- Feed and direct chat between users
+- AI-assisted chat for plan questions
+- Stripe billing
 
 ## Tech Stack
-
-* **Next.js 16** — App Router and application framework
-* **TypeScript** — type-safe development
-* **Tailwind CSS 4** — responsive styling
-* **Prisma ORM 7** — database access and migrations
-* **Neon PostgreSQL** — cloud PostgreSQL database
-* **@prisma/adapter-neon** — Prisma driver adapter for Neon
-* **Auth.js / NextAuth.js v5** — authentication
-* **Google OAuth** — Google sign-in integration
-* **GitHub OAuth** — GitHub sign-in integration
-* **Zod** — input and API validation
-* **@react-pdf/renderer** — PDF generation
-* **SheetJS (xlsx)** — Excel export
-* **Lucide React** — interface icons
-* **Fraunces + Work Sans** — application typography
+- **App:** Next.js 16, TypeScript, Tailwind CSS 4
+- **Data:** Prisma ORM 7, Neon PostgreSQL
+- **Auth:** Auth.js (Google, GitHub)
+- **Validation:** Zod
+- **Export:** @react-pdf/renderer, SheetJS
 
 ## Architecture
-
-DietGreen follows a layered architecture inspired by **Clean Architecture and SOLID principles**.
-
-```text
-src/
-├── domain/
-│   ├── entities/
-│   ├── repositories/
-│   └── services/
-│
-├── application/
-│   └── use-cases/
-│
-├── infrastructure/
-│   ├── db/
-│   ├── repositories/
-│   └── auth/
-│
-├── lib/
-│   ├── container.ts
-│   ├── exportPlan.ts
-│   └── icons.ts
-│
-├── components/
-│
-└── app/
+Layered, inspired by Clean Architecture:
 ```
+src/domain/         business logic, framework-free (macroCalculator, planGenerator)
+src/application/    use-cases orchestrating domain services
+src/infrastructure/ Prisma repositories, Auth.js config
+src/components/     UI
+src/app/            Next.js routes
+```
+Domain services don't import from infrastructure — they're unit-testable with no database.
 
-The **domain layer** contains the core business rules without depending on external infrastructure.
+## Testing & CI/CD
+- **Vitest** covers the domain logic (`src/domain/services/*.test.ts`)
+- **GitHub Actions** (`.github/workflows/ci.yml`) runs lint → typecheck → tests → build on every push and pull request to `main`
+- Branch protection on `main` requires that check to pass before merging
 
-The **application layer** coordinates the business use cases.
-
-The **infrastructure layer** contains implementations for the database, repositories, authentication, and other external services.
-
-Repositories are defined as interfaces within the domain and implemented in the infrastructure layer, following the **Dependency Inversion Principle**.
-
-This separation keeps the business logic independent from specific technologies and makes infrastructure components easier to replace or maintain.
-
-## Authentication
-
-DietGreen currently supports two OAuth providers:
-
-### Google OAuth
-
-Users can authenticate using their Google account.
-
-### GitHub OAuth
-
-Users can authenticate using their GitHub account.
-
-Both integrations are implemented through **Auth.js / NextAuth.js v5**.
-
-No other authentication providers are currently integrated.
-
-## Meal Plan Export
-
-Generated meal plans can be exported directly from the application.
-
-### PDF
-
-PDF files are generated using `@react-pdf/renderer`, producing a structured document suitable for saving or printing.
-
-### Excel
-
-Meal plans can also be exported as `.xlsx` files using **SheetJS (`xlsx`)**, allowing users to edit and analyze the generated data.
-
-## How to Run Locally
-
-Clone the repository and install the dependencies:
-
+## Getting Started
 ```bash
 npm install
-```
-
-Create your environment file:
-
-```bash
-cp .env.example .env
-```
-
-Configure the required environment variables:
-
-```env
-DATABASE_URL=
-DIRECT_URL=
-
-AUTH_SECRET=
-AUTH_URL=
-
-AUTH_GOOGLE_ID=
-AUTH_GOOGLE_SECRET=
-
-AUTH_GITHUB_ID=
-AUTH_GITHUB_SECRET=
-```
-
-Generate the Prisma client:
-
-```bash
+cp .env.example .env   # fill in DATABASE_URL, DIRECT_URL, AUTH_SECRET, AUTH_URL, OAuth keys
 npx prisma generate
-```
-
-Run the database migrations:
-
-```bash
-npx prisma migrate dev --name init
-```
-
-Seed the database:
-
-```bash
-npx prisma db seed
-```
-
-Start the development server:
-
-```bash
+npx prisma migrate dev
+npx tsx prisma/seed.ts
 npm run dev
 ```
 
-The application will be available at:
-
-```text
-http://localhost:3000
-```
-
-## Database
-
-DietGreen uses **PostgreSQL through Neon**.
-
-Two database connections are configured:
-
-* `DATABASE_URL` — pooled connection used by the application at runtime.
-* `DIRECT_URL` — direct connection used by Prisma migrations.
-
-Both connections should use SSL.
-
 ## Deployment
-
-The production application is deployed using **Render**, with **Neon PostgreSQL** as the database provider.
-
-The production build can be executed with:
-
-```bash
+Render, auto-deploy from `main`. Build command runs migrations automatically:
+```
 npm install && npx prisma generate && npx prisma migrate deploy && npm run build
 ```
+Seed the production database once manually after the first deploy (`npx tsx prisma/seed.ts`, pointed at the production `DATABASE_URL`/`DIRECT_URL`).
 
-The application is started with:
-
-```bash
-npm run start
-```
-
-After the initial deployment, the production database can be populated using:
-
-```bash
-npx prisma db seed
-```
-
-## Nutritional Data
-
-The nutritional values used by DietGreen are reference estimates based on sources such as **USDA FoodData Central** and the **TACO food composition table**.
-
-Energy and macronutrient calculations use established nutritional methodologies, including the **Mifflin-St Jeor equation** and references from sports nutrition literature.
-
-DietGreen is intended as a meal-planning and educational tool and should not replace professional nutritional guidance.
-
-Relevant calculation references are documented in:
-
-```text
-src/domain/services/macroCalculator.ts
-```
+## Disclaimer
+Educational meal-planning tool. Not a substitute for a registered dietitian or physician.
 
 ## Author
-
-**Rayssa Roberta Rodrigues Silva**
-
-Frontend Developer focused on building modern, responsive, and maintainable web applications.
-
-**GitHub:** https://github.com/rayssarrsilva
+**Rayssa Roberta Rodrigues Silva** — github.com/rayssarrsilva
 
 ## License
-
-This project is licensed under the **MIT License**.
+MIT
 
 ---
 
 # Português
 
-## Descrição
+App web que sugere quais alimentos incluir nas suas refeições, com base no seu perfil alimentar (vegetariano ou onívoro, com 10 variações mais específicas disponíveis) e objetivo físico. Feito com Next.js, Prisma e PostgreSQL.
 
-DietGreen é uma aplicação web responsiva desenvolvida para gerar **cardápios personalizados** com base no perfil alimentar, objetivo físico e necessidades nutricionais do usuário.
+## Status
 
-O sistema possui **10 opções de perfil alimentar**, incluindo vegano, vegetariano, lactovegetariano, pescetariano e perfil personalizado. Essas opções podem ser combinadas com objetivos como ganho de massa muscular, emagrecimento, bulking e cutting.
-
-Os cardápios gerados apresentam informações nutricionais, cálculo de macronutrientes e substituições de alimentos ranqueadas de acordo com sua adequação nutricional. O sistema também considera a viabilidade econômica e a disponibilidade local dos alimentos ao sugerir alternativas.
-
-Os cardápios podem ser exportados em **PDF ou Excel (.xlsx)**.
-
-A autenticação é opcional e possui integração com **Google OAuth e GitHub OAuth**, utilizando Auth.js. Usuários autenticados podem salvar e acessar seus cardápios posteriormente.
-
-## Demo
-
-**Aplicação online:** https://diet-app-3iyl.onrender.com/
+MVP em desenvolvimento ativo. **Funcionalidades** abaixo já estão no ar. **Roteiro** ainda não foi construído.
 
 ## Funcionalidades
+- Escolha rápida vegetariano / onívoro, com 10 perfis mais específicos por baixo
+- Plano por objetivo: manutenção, ganho de massa, emagrecimento, bulking, cutting
+- Sugestão de alimentos por categoria (proteína, carboidrato, gordura, fibra) — sem mostrar total de calorias/gramas ainda, pra não exibir número não verificado
+- Variedade ajustável por categoria (5–20 opções no rodízio do cardápio)
+- Exportação em PDF e Excel
+- Login com Google / GitHub, com histórico de cardápios salvos
+- Tema claro/escuro, interface em português/inglês
+- Responsivo (celular, tablet, desktop)
 
-* Geração de cardápios personalizados
-* 10 opções de perfil alimentar
-* Diferentes objetivos físicos e nutricionais
-* Cálculo de calorias e macronutrientes
-* Substituições alimentares ranqueadas
-* Consideração de viabilidade econômica e local
-* Exportação de cardápios para PDF
-* Exportação de cardápios para Excel (.xlsx)
-* Login com Google
-* Login com GitHub
-* Persistência de cardápios por usuário
-* Interface responsiva
-* Validação de dados com Zod
-
-## Como Usar
-
-1. Acesse a [aplicação online](https://diet-app-3iyl.onrender.com/).
-2. Selecione seu perfil alimentar.
-3. Selecione seu objetivo físico.
-4. Informe os dados solicitados.
-5. Gere seu cardápio personalizado.
-6. Consulte as refeições e informações nutricionais.
-7. Utilize as substituições sugeridas quando necessário.
-8. Exporte o cardápio para PDF ou Excel.
-9. Faça login com Google ou GitHub caso queira salvar seus cardápios.
-
-O login é opcional. A aplicação funciona sem autenticação, mas o armazenamento persistente por usuário depende de uma conta.
+## Roteiro
+- Valores nutricionais verificados por alimento e por cardápio
+- Perfis públicos de usuário
+- Feed e chat direto entre usuários
+- Chat com IA pra dúvidas sobre o cardápio
+- Cobrança via Stripe
 
 ## Tecnologias
-
-* **Next.js 16** — App Router e framework da aplicação
-* **TypeScript** — desenvolvimento com tipagem estática
-* **Tailwind CSS 4** — estilização responsiva
-* **Prisma ORM 7** — acesso ao banco e migrations
-* **Neon PostgreSQL** — banco PostgreSQL em nuvem
-* **@prisma/adapter-neon** — driver adapter do Prisma para Neon
-* **Auth.js / NextAuth.js v5** — autenticação
-* **Google OAuth** — integração de login com Google
-* **GitHub OAuth** — integração de login com GitHub
-* **Zod** — validação de entradas e APIs
-* **@react-pdf/renderer** — geração de PDF
-* **SheetJS (xlsx)** — exportação para Excel
-* **Lucide React** — ícones da interface
-* **Fraunces + Work Sans** — tipografia da aplicação
+- **App:** Next.js 16, TypeScript, Tailwind CSS 4
+- **Dados:** Prisma ORM 7, Neon PostgreSQL
+- **Login:** Auth.js (Google, GitHub)
+- **Validação:** Zod
+- **Exportação:** @react-pdf/renderer, SheetJS
 
 ## Arquitetura
-
-O DietGreen utiliza uma arquitetura em camadas inspirada em **Clean Architecture e princípios SOLID**.
-
-```text
-src/
-├── domain/
-│   ├── entities/
-│   ├── repositories/
-│   └── services/
-│
-├── application/
-│   └── use-cases/
-│
-├── infrastructure/
-│   ├── db/
-│   ├── repositories/
-│   └── auth/
-│
-├── lib/
-│   ├── container.ts
-│   ├── exportPlan.ts
-│   └── icons.ts
-│
-├── components/
-│
-└── app/
+Em camadas, inspirada em Clean Architecture:
 ```
+src/domain/         regra de negócio, sem framework (macroCalculator, planGenerator)
+src/application/    use-cases que orquestram os serviços de domínio
+src/infrastructure/ repositórios Prisma, config do Auth.js
+src/components/     UI
+src/app/            rotas do Next.js
+```
+Os serviços de domínio não importam de infraestrutura — testáveis isoladamente, sem banco.
 
-A **camada de domínio** concentra as principais regras de negócio sem depender diretamente de infraestrutura externa.
+## Testes & CI/CD
+- **Vitest** cobre a lógica de domínio (`src/domain/services/*.test.ts`)
+- **GitHub Actions** (`.github/workflows/ci.yml`) roda lint → typecheck → testes → build a cada push e pull request pra `main`
+- Proteção de branch na `main` exige esse check passando antes de mergear
 
-A **camada de aplicação** coordena os casos de uso.
-
-A **camada de infraestrutura** contém as implementações relacionadas ao banco de dados, repositórios, autenticação e demais serviços externos.
-
-Os repositórios são definidos como interfaces no domínio e implementados na infraestrutura, seguindo o **Princípio da Inversão de Dependência**.
-
-Essa separação mantém as regras de negócio independentes das tecnologias utilizadas e facilita a manutenção e substituição de componentes de infraestrutura.
-
-## Autenticação
-
-Atualmente, o DietGreen possui duas integrações OAuth:
-
-### Google OAuth
-
-Permite que usuários façam login utilizando sua conta Google.
-
-### GitHub OAuth
-
-Permite que usuários façam login utilizando sua conta GitHub.
-
-As duas integrações são implementadas através do **Auth.js / NextAuth.js v5**.
-
-Nenhum outro provedor de autenticação está integrado atualmente.
-
-## Exportação dos Cardápios
-
-Os cardápios podem ser exportados diretamente pela aplicação.
-
-### PDF
-
-Os arquivos PDF são gerados utilizando `@react-pdf/renderer`, produzindo documentos estruturados para salvar ou imprimir.
-
-### Excel
-
-Os cardápios também podem ser exportados como arquivos `.xlsx` utilizando **SheetJS (`xlsx`)**, permitindo editar e analisar os dados gerados.
-
-## Como Executar Localmente
-
-Instale as dependências:
-
+## Como Rodar
 ```bash
 npm install
-```
-
-Crie o arquivo de ambiente:
-
-```bash
-cp .env.example .env
-```
-
-Configure as variáveis necessárias:
-
-```env
-DATABASE_URL=
-DIRECT_URL=
-
-AUTH_SECRET=
-AUTH_URL=
-
-AUTH_GOOGLE_ID=
-AUTH_GOOGLE_SECRET=
-
-AUTH_GITHUB_ID=
-AUTH_GITHUB_SECRET=
-```
-
-Gere o cliente Prisma:
-
-```bash
+cp .env.example .env   # preenche DATABASE_URL, DIRECT_URL, AUTH_SECRET, AUTH_URL, chaves OAuth
 npx prisma generate
-```
-
-Execute as migrations:
-
-```bash
-npx prisma migrate dev --name init
-```
-
-Popule o banco de dados:
-
-```bash
-npx prisma db seed
-```
-
-Inicie o servidor:
-
-```bash
+npx prisma migrate dev
+npx tsx prisma/seed.ts
 npm run dev
 ```
 
-A aplicação estará disponível em:
-
-```text
-http://localhost:3000
-```
-
-## Banco de Dados
-
-O DietGreen utiliza **PostgreSQL através do Neon**.
-
-São utilizadas duas conexões:
-
-* `DATABASE_URL` — conexão pooled utilizada pela aplicação em runtime.
-* `DIRECT_URL` — conexão direta utilizada pelas migrations do Prisma.
-
-Ambas devem utilizar SSL.
-
 ## Deploy
-
-A aplicação está publicada no **Render**, utilizando **Neon PostgreSQL** como banco de dados.
-
-O build de produção pode ser executado com:
-
-```bash
+Render, auto-deploy a partir da `main`. O comando de build já roda a migration sozinho:
+```
 npm install && npx prisma generate && npx prisma migrate deploy && npm run build
 ```
+O seed de produção precisa rodar manualmente uma vez após o primeiro deploy (`npx tsx prisma/seed.ts`, apontando pro `DATABASE_URL`/`DIRECT_URL` de produção).
 
-O servidor é iniciado com:
-
-```bash
-npm run start
-```
-
-Após o primeiro deploy, o banco de produção pode ser populado utilizando:
-
-```bash
-npx prisma db seed
-```
-
-## Dados Nutricionais
-
-Os valores nutricionais utilizados pelo DietGreen são estimativas de referência baseadas em fontes como **USDA FoodData Central** e a **Tabela TACO**.
-
-Os cálculos de energia e macronutrientes utilizam metodologias nutricionais estabelecidas, incluindo a **equação de Mifflin-St Jeor** e referências da literatura de nutrição esportiva.
-
-O DietGreen foi desenvolvido como uma ferramenta de planejamento alimentar e apoio educacional, não substituindo acompanhamento profissional.
-
-As referências utilizadas nos cálculos estão documentadas em:
-
-```text
-src/domain/services/macroCalculator.ts
-```
+## Aviso
+Ferramenta educacional de planejamento alimentar. Não substitui acompanhamento de nutricionista ou médico.
 
 ## Autora
-
-**Rayssa Roberta Rodrigues Silva**
-
-Frontend Developer focada no desenvolvimento de aplicações web modernas, responsivas e sustentáveis.
-
-**GitHub:** https://github.com/rayssarrsilva
+**Rayssa Roberta Rodrigues Silva** — github.com/rayssarrsilva
 
 ## Licença
-
-Este projeto está licenciado sob a **MIT License**.
+MIT
