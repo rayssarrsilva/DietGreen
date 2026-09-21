@@ -12,7 +12,7 @@ Web app that suggests which foods to include in your meals, based on your dietar
 
 ## Status
 
-MVP in active development. **Features** below are live. **Roadmap** is not built yet.
+MVP in active development. Everything in **Features** below is already live.
 
 ## Features
 - Vegetarian / omnivore quick pick, with 10 more specific profiles underneath
@@ -24,19 +24,25 @@ MVP in active development. **Features** below are live. **Roadmap** is not built
 - Light/dark theme, Portuguese/English interface
 - Responsive (mobile, tablet, desktop)
 
-## Roadmap
-- Verified nutritional values per food and per plan
-- Public user profiles
-- Feed and direct chat between users
-- AI-assisted chat for plan questions
-- Stripe billing
-
 ## Tech Stack
 - **App:** Next.js 16, TypeScript, Tailwind CSS 4
 - **Data:** Prisma ORM 7, Neon PostgreSQL
-- **Auth:** Auth.js (Google, GitHub)
+- **Auth:** Auth.js (Google, GitHub OAuth)
 - **Validation:** Zod
 - **Export:** @react-pdf/renderer, SheetJS
+- **Testing:** Vitest
+- **CI/CD:** GitHub Actions
+
+## Engineering Practices
+- Layered architecture (Clean Architecture / SOLID), domain layer with no framework dependency
+- Automated testing (unit tests on business logic)
+- CI/CD pipeline: lint, typecheck, test, and build gated on every PR
+- Git flow with branch protection: PRs required, merge blocked until CI passes
+- OAuth2 authentication (Google, GitHub)
+- Relational database with ORM and versioned migrations
+- Environment-based configuration (`.env`), no secrets in code
+- i18n (PT/EN) and responsive, accessible UI (light/dark theme)
+- RESTful API routes with server-side schema validation
 
 ## Architecture
 Layered, inspired by Clean Architecture:
@@ -100,19 +106,25 @@ MVP em desenvolvimento ativo. **Funcionalidades** abaixo já estão no ar. **Rot
 - Tema claro/escuro, interface em português/inglês
 - Responsivo (celular, tablet, desktop)
 
-## Roteiro
-- Valores nutricionais verificados por alimento e por cardápio
-- Perfis públicos de usuário
-- Feed e chat direto entre usuários
-- Chat com IA pra dúvidas sobre o cardápio
-- Cobrança via Stripe
-
 ## Tecnologias
 - **App:** Next.js 16, TypeScript, Tailwind CSS 4
 - **Dados:** Prisma ORM 7, Neon PostgreSQL
-- **Login:** Auth.js (Google, GitHub)
+- **Login:** Auth.js (OAuth2 Google, GitHub)
 - **Validação:** Zod
 - **Exportação:** @react-pdf/renderer, SheetJS
+- **Testes:** Vitest
+- **CI/CD:** GitHub Actions
+
+## Práticas de Engenharia
+- Arquitetura em camadas (Clean Architecture / SOLID), domínio sem dependência de framework
+- Testes automatizados (testes unitários na regra de negócio)
+- Pipeline de CI/CD: lint, typecheck, teste e build obrigatórios em todo PR
+- Git flow com proteção de branch: PR obrigatório, merge bloqueado até o CI passar
+- Autenticação OAuth2 (Google, GitHub)
+- Banco relacional com ORM e migrations versionadas
+- Configuração via variáveis de ambiente (`.env`), sem segredo no código
+- i18n (PT/EN) e UI responsiva e acessível (tema claro/escuro)
+- Rotas de API RESTful com validação de schema no servidor
 
 ## Arquitetura
 Em camadas, inspirada em Clean Architecture:
