@@ -30,3 +30,33 @@ export const FeasibilityTag = {
 } as const
 
 export type FeasibilityTag = (typeof FeasibilityTag)[keyof typeof FeasibilityTag]
+
+
+export const UsageKind = {
+  TRIAL: 'TRIAL',
+  CHAT: 'CHAT',
+  ATTACHMENT: 'ATTACHMENT'
+} as const
+
+export type UsageKind = (typeof UsageKind)[keyof typeof UsageKind]
+
+
+export const PaymentKind = {
+  PREMIUM: 'PREMIUM',
+  CREDITS: 'CREDITS'
+} as const
+
+export type PaymentKind = (typeof PaymentKind)[keyof typeof PaymentKind]
+
+
+export const PaymentStatus = {
+  PENDING: 'PENDING',
+  APPROVED: 'APPROVED',
+  REJECTED: 'REJECTED',
+  CANCELLED: 'CANCELLED',
+  EXPIRED: 'EXPIRED',
+  REFUNDED: 'REFUNDED',
+  PARTIALLY_REFUNDED: 'PARTIALLY_REFUNDED'
+} as const
+
+export type PaymentStatus = (typeof PaymentStatus)[keyof typeof PaymentStatus]

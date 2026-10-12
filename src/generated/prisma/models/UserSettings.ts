@@ -29,6 +29,12 @@ export type UserSettingsMinAggregateOutputType = {
   userId: string | null
   dietaryProfile: string | null
   goal: string | null
+  greenStyle: string | null
+  greenCustomStyle: string | null
+  adultConfirmedAt: Date | null
+  chatTermsAcceptedAt: Date | null
+  healthProcessingConsentAt: Date | null
+  healthStorageConsentAt: Date | null
   updatedAt: Date | null
 }
 
@@ -37,6 +43,12 @@ export type UserSettingsMaxAggregateOutputType = {
   userId: string | null
   dietaryProfile: string | null
   goal: string | null
+  greenStyle: string | null
+  greenCustomStyle: string | null
+  adultConfirmedAt: Date | null
+  chatTermsAcceptedAt: Date | null
+  healthProcessingConsentAt: Date | null
+  healthStorageConsentAt: Date | null
   updatedAt: Date | null
 }
 
@@ -46,6 +58,12 @@ export type UserSettingsCountAggregateOutputType = {
   dietaryProfile: number
   goal: number
   feasibilityTags: number
+  greenStyle: number
+  greenCustomStyle: number
+  adultConfirmedAt: number
+  chatTermsAcceptedAt: number
+  healthProcessingConsentAt: number
+  healthStorageConsentAt: number
   updatedAt: number
   _all: number
 }
@@ -56,6 +74,12 @@ export type UserSettingsMinAggregateInputType = {
   userId?: true
   dietaryProfile?: true
   goal?: true
+  greenStyle?: true
+  greenCustomStyle?: true
+  adultConfirmedAt?: true
+  chatTermsAcceptedAt?: true
+  healthProcessingConsentAt?: true
+  healthStorageConsentAt?: true
   updatedAt?: true
 }
 
@@ -64,6 +88,12 @@ export type UserSettingsMaxAggregateInputType = {
   userId?: true
   dietaryProfile?: true
   goal?: true
+  greenStyle?: true
+  greenCustomStyle?: true
+  adultConfirmedAt?: true
+  chatTermsAcceptedAt?: true
+  healthProcessingConsentAt?: true
+  healthStorageConsentAt?: true
   updatedAt?: true
 }
 
@@ -73,6 +103,12 @@ export type UserSettingsCountAggregateInputType = {
   dietaryProfile?: true
   goal?: true
   feasibilityTags?: true
+  greenStyle?: true
+  greenCustomStyle?: true
+  adultConfirmedAt?: true
+  chatTermsAcceptedAt?: true
+  healthProcessingConsentAt?: true
+  healthStorageConsentAt?: true
   updatedAt?: true
   _all?: true
 }
@@ -155,6 +191,12 @@ export type UserSettingsGroupByOutputType = {
   dietaryProfile: string | null
   goal: string | null
   feasibilityTags: $Enums.FeasibilityTag[]
+  greenStyle: string
+  greenCustomStyle: string | null
+  adultConfirmedAt: Date | null
+  chatTermsAcceptedAt: Date | null
+  healthProcessingConsentAt: Date | null
+  healthStorageConsentAt: Date | null
   updatedAt: Date
   _count: UserSettingsCountAggregateOutputType | null
   _min: UserSettingsMinAggregateOutputType | null
@@ -185,6 +227,12 @@ export type UserSettingsWhereInput = {
   dietaryProfile?: Prisma.StringNullableFilter<"UserSettings"> | string | null
   goal?: Prisma.StringNullableFilter<"UserSettings"> | string | null
   feasibilityTags?: Prisma.EnumFeasibilityTagNullableListFilter<"UserSettings">
+  greenStyle?: Prisma.StringFilter<"UserSettings"> | string
+  greenCustomStyle?: Prisma.StringNullableFilter<"UserSettings"> | string | null
+  adultConfirmedAt?: Prisma.DateTimeNullableFilter<"UserSettings"> | Date | string | null
+  chatTermsAcceptedAt?: Prisma.DateTimeNullableFilter<"UserSettings"> | Date | string | null
+  healthProcessingConsentAt?: Prisma.DateTimeNullableFilter<"UserSettings"> | Date | string | null
+  healthStorageConsentAt?: Prisma.DateTimeNullableFilter<"UserSettings"> | Date | string | null
   updatedAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }
@@ -195,6 +243,12 @@ export type UserSettingsOrderByWithRelationInput = {
   dietaryProfile?: Prisma.SortOrderInput | Prisma.SortOrder
   goal?: Prisma.SortOrderInput | Prisma.SortOrder
   feasibilityTags?: Prisma.SortOrder
+  greenStyle?: Prisma.SortOrder
+  greenCustomStyle?: Prisma.SortOrderInput | Prisma.SortOrder
+  adultConfirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  chatTermsAcceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  healthProcessingConsentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  healthStorageConsentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   user?: Prisma.UserOrderByWithRelationInput
 }
@@ -208,6 +262,12 @@ export type UserSettingsWhereUniqueInput = Prisma.AtLeast<{
   dietaryProfile?: Prisma.StringNullableFilter<"UserSettings"> | string | null
   goal?: Prisma.StringNullableFilter<"UserSettings"> | string | null
   feasibilityTags?: Prisma.EnumFeasibilityTagNullableListFilter<"UserSettings">
+  greenStyle?: Prisma.StringFilter<"UserSettings"> | string
+  greenCustomStyle?: Prisma.StringNullableFilter<"UserSettings"> | string | null
+  adultConfirmedAt?: Prisma.DateTimeNullableFilter<"UserSettings"> | Date | string | null
+  chatTermsAcceptedAt?: Prisma.DateTimeNullableFilter<"UserSettings"> | Date | string | null
+  healthProcessingConsentAt?: Prisma.DateTimeNullableFilter<"UserSettings"> | Date | string | null
+  healthStorageConsentAt?: Prisma.DateTimeNullableFilter<"UserSettings"> | Date | string | null
   updatedAt?: Prisma.DateTimeFilter<"UserSettings"> | Date | string
   user?: Prisma.XOR<Prisma.UserScalarRelationFilter, Prisma.UserWhereInput>
 }, "id" | "userId">
@@ -218,6 +278,12 @@ export type UserSettingsOrderByWithAggregationInput = {
   dietaryProfile?: Prisma.SortOrderInput | Prisma.SortOrder
   goal?: Prisma.SortOrderInput | Prisma.SortOrder
   feasibilityTags?: Prisma.SortOrder
+  greenStyle?: Prisma.SortOrder
+  greenCustomStyle?: Prisma.SortOrderInput | Prisma.SortOrder
+  adultConfirmedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  chatTermsAcceptedAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  healthProcessingConsentAt?: Prisma.SortOrderInput | Prisma.SortOrder
+  healthStorageConsentAt?: Prisma.SortOrderInput | Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
   _count?: Prisma.UserSettingsCountOrderByAggregateInput
   _max?: Prisma.UserSettingsMaxOrderByAggregateInput
@@ -233,6 +299,12 @@ export type UserSettingsScalarWhereWithAggregatesInput = {
   dietaryProfile?: Prisma.StringNullableWithAggregatesFilter<"UserSettings"> | string | null
   goal?: Prisma.StringNullableWithAggregatesFilter<"UserSettings"> | string | null
   feasibilityTags?: Prisma.EnumFeasibilityTagNullableListFilter<"UserSettings">
+  greenStyle?: Prisma.StringWithAggregatesFilter<"UserSettings"> | string
+  greenCustomStyle?: Prisma.StringNullableWithAggregatesFilter<"UserSettings"> | string | null
+  adultConfirmedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"UserSettings"> | Date | string | null
+  chatTermsAcceptedAt?: Prisma.DateTimeNullableWithAggregatesFilter<"UserSettings"> | Date | string | null
+  healthProcessingConsentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"UserSettings"> | Date | string | null
+  healthStorageConsentAt?: Prisma.DateTimeNullableWithAggregatesFilter<"UserSettings"> | Date | string | null
   updatedAt?: Prisma.DateTimeWithAggregatesFilter<"UserSettings"> | Date | string
 }
 
@@ -241,6 +313,12 @@ export type UserSettingsCreateInput = {
   dietaryProfile?: string | null
   goal?: string | null
   feasibilityTags?: Prisma.UserSettingsCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
+  greenStyle?: string
+  greenCustomStyle?: string | null
+  adultConfirmedAt?: Date | string | null
+  chatTermsAcceptedAt?: Date | string | null
+  healthProcessingConsentAt?: Date | string | null
+  healthStorageConsentAt?: Date | string | null
   updatedAt?: Date | string
   user: Prisma.UserCreateNestedOneWithoutSettingsInput
 }
@@ -251,6 +329,12 @@ export type UserSettingsUncheckedCreateInput = {
   dietaryProfile?: string | null
   goal?: string | null
   feasibilityTags?: Prisma.UserSettingsCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
+  greenStyle?: string
+  greenCustomStyle?: string | null
+  adultConfirmedAt?: Date | string | null
+  chatTermsAcceptedAt?: Date | string | null
+  healthProcessingConsentAt?: Date | string | null
+  healthStorageConsentAt?: Date | string | null
   updatedAt?: Date | string
 }
 
@@ -259,6 +343,12 @@ export type UserSettingsUpdateInput = {
   dietaryProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feasibilityTags?: Prisma.UserSettingsUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
+  greenStyle?: Prisma.StringFieldUpdateOperationsInput | string
+  greenCustomStyle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adultConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  chatTermsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthProcessingConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthStorageConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
   user?: Prisma.UserUpdateOneRequiredWithoutSettingsNestedInput
 }
@@ -269,6 +359,12 @@ export type UserSettingsUncheckedUpdateInput = {
   dietaryProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feasibilityTags?: Prisma.UserSettingsUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
+  greenStyle?: Prisma.StringFieldUpdateOperationsInput | string
+  greenCustomStyle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adultConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  chatTermsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthProcessingConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthStorageConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -278,6 +374,12 @@ export type UserSettingsCreateManyInput = {
   dietaryProfile?: string | null
   goal?: string | null
   feasibilityTags?: Prisma.UserSettingsCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
+  greenStyle?: string
+  greenCustomStyle?: string | null
+  adultConfirmedAt?: Date | string | null
+  chatTermsAcceptedAt?: Date | string | null
+  healthProcessingConsentAt?: Date | string | null
+  healthStorageConsentAt?: Date | string | null
   updatedAt?: Date | string
 }
 
@@ -286,6 +388,12 @@ export type UserSettingsUpdateManyMutationInput = {
   dietaryProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feasibilityTags?: Prisma.UserSettingsUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
+  greenStyle?: Prisma.StringFieldUpdateOperationsInput | string
+  greenCustomStyle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adultConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  chatTermsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthProcessingConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthStorageConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -295,6 +403,12 @@ export type UserSettingsUncheckedUpdateManyInput = {
   dietaryProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feasibilityTags?: Prisma.UserSettingsUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
+  greenStyle?: Prisma.StringFieldUpdateOperationsInput | string
+  greenCustomStyle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adultConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  chatTermsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthProcessingConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthStorageConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -317,6 +431,12 @@ export type UserSettingsCountOrderByAggregateInput = {
   dietaryProfile?: Prisma.SortOrder
   goal?: Prisma.SortOrder
   feasibilityTags?: Prisma.SortOrder
+  greenStyle?: Prisma.SortOrder
+  greenCustomStyle?: Prisma.SortOrder
+  adultConfirmedAt?: Prisma.SortOrder
+  chatTermsAcceptedAt?: Prisma.SortOrder
+  healthProcessingConsentAt?: Prisma.SortOrder
+  healthStorageConsentAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -325,6 +445,12 @@ export type UserSettingsMaxOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   dietaryProfile?: Prisma.SortOrder
   goal?: Prisma.SortOrder
+  greenStyle?: Prisma.SortOrder
+  greenCustomStyle?: Prisma.SortOrder
+  adultConfirmedAt?: Prisma.SortOrder
+  chatTermsAcceptedAt?: Prisma.SortOrder
+  healthProcessingConsentAt?: Prisma.SortOrder
+  healthStorageConsentAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -333,6 +459,12 @@ export type UserSettingsMinOrderByAggregateInput = {
   userId?: Prisma.SortOrder
   dietaryProfile?: Prisma.SortOrder
   goal?: Prisma.SortOrder
+  greenStyle?: Prisma.SortOrder
+  greenCustomStyle?: Prisma.SortOrder
+  adultConfirmedAt?: Prisma.SortOrder
+  chatTermsAcceptedAt?: Prisma.SortOrder
+  healthProcessingConsentAt?: Prisma.SortOrder
+  healthStorageConsentAt?: Prisma.SortOrder
   updatedAt?: Prisma.SortOrder
 }
 
@@ -382,6 +514,12 @@ export type UserSettingsCreateWithoutUserInput = {
   dietaryProfile?: string | null
   goal?: string | null
   feasibilityTags?: Prisma.UserSettingsCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
+  greenStyle?: string
+  greenCustomStyle?: string | null
+  adultConfirmedAt?: Date | string | null
+  chatTermsAcceptedAt?: Date | string | null
+  healthProcessingConsentAt?: Date | string | null
+  healthStorageConsentAt?: Date | string | null
   updatedAt?: Date | string
 }
 
@@ -390,6 +528,12 @@ export type UserSettingsUncheckedCreateWithoutUserInput = {
   dietaryProfile?: string | null
   goal?: string | null
   feasibilityTags?: Prisma.UserSettingsCreatefeasibilityTagsInput | $Enums.FeasibilityTag[]
+  greenStyle?: string
+  greenCustomStyle?: string | null
+  adultConfirmedAt?: Date | string | null
+  chatTermsAcceptedAt?: Date | string | null
+  healthProcessingConsentAt?: Date | string | null
+  healthStorageConsentAt?: Date | string | null
   updatedAt?: Date | string
 }
 
@@ -414,6 +558,12 @@ export type UserSettingsUpdateWithoutUserInput = {
   dietaryProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feasibilityTags?: Prisma.UserSettingsUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
+  greenStyle?: Prisma.StringFieldUpdateOperationsInput | string
+  greenCustomStyle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adultConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  chatTermsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthProcessingConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthStorageConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -422,6 +572,12 @@ export type UserSettingsUncheckedUpdateWithoutUserInput = {
   dietaryProfile?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   goal?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
   feasibilityTags?: Prisma.UserSettingsUpdatefeasibilityTagsInput | $Enums.FeasibilityTag[]
+  greenStyle?: Prisma.StringFieldUpdateOperationsInput | string
+  greenCustomStyle?: Prisma.NullableStringFieldUpdateOperationsInput | string | null
+  adultConfirmedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  chatTermsAcceptedAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthProcessingConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
+  healthStorageConsentAt?: Prisma.NullableDateTimeFieldUpdateOperationsInput | Date | string | null
   updatedAt?: Prisma.DateTimeFieldUpdateOperationsInput | Date | string
 }
 
@@ -433,6 +589,12 @@ export type UserSettingsSelect<ExtArgs extends runtime.Types.Extensions.Internal
   dietaryProfile?: boolean
   goal?: boolean
   feasibilityTags?: boolean
+  greenStyle?: boolean
+  greenCustomStyle?: boolean
+  adultConfirmedAt?: boolean
+  chatTermsAcceptedAt?: boolean
+  healthProcessingConsentAt?: boolean
+  healthStorageConsentAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userSettings"]>
@@ -443,6 +605,12 @@ export type UserSettingsSelectCreateManyAndReturn<ExtArgs extends runtime.Types.
   dietaryProfile?: boolean
   goal?: boolean
   feasibilityTags?: boolean
+  greenStyle?: boolean
+  greenCustomStyle?: boolean
+  adultConfirmedAt?: boolean
+  chatTermsAcceptedAt?: boolean
+  healthProcessingConsentAt?: boolean
+  healthStorageConsentAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userSettings"]>
@@ -453,6 +621,12 @@ export type UserSettingsSelectUpdateManyAndReturn<ExtArgs extends runtime.Types.
   dietaryProfile?: boolean
   goal?: boolean
   feasibilityTags?: boolean
+  greenStyle?: boolean
+  greenCustomStyle?: boolean
+  adultConfirmedAt?: boolean
+  chatTermsAcceptedAt?: boolean
+  healthProcessingConsentAt?: boolean
+  healthStorageConsentAt?: boolean
   updatedAt?: boolean
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }, ExtArgs["result"]["userSettings"]>
@@ -463,10 +637,16 @@ export type UserSettingsSelectScalar = {
   dietaryProfile?: boolean
   goal?: boolean
   feasibilityTags?: boolean
+  greenStyle?: boolean
+  greenCustomStyle?: boolean
+  adultConfirmedAt?: boolean
+  chatTermsAcceptedAt?: boolean
+  healthProcessingConsentAt?: boolean
+  healthStorageConsentAt?: boolean
   updatedAt?: boolean
 }
 
-export type UserSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "dietaryProfile" | "goal" | "feasibilityTags" | "updatedAt", ExtArgs["result"]["userSettings"]>
+export type UserSettingsOmit<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = runtime.Types.Extensions.GetOmit<"id" | "userId" | "dietaryProfile" | "goal" | "feasibilityTags" | "greenStyle" | "greenCustomStyle" | "adultConfirmedAt" | "chatTermsAcceptedAt" | "healthProcessingConsentAt" | "healthStorageConsentAt" | "updatedAt", ExtArgs["result"]["userSettings"]>
 export type UserSettingsInclude<ExtArgs extends runtime.Types.Extensions.InternalArgs = runtime.Types.Extensions.DefaultArgs> = {
   user?: boolean | Prisma.UserDefaultArgs<ExtArgs>
 }
@@ -488,6 +668,12 @@ export type $UserSettingsPayload<ExtArgs extends runtime.Types.Extensions.Intern
     dietaryProfile: string | null
     goal: string | null
     feasibilityTags: $Enums.FeasibilityTag[]
+    greenStyle: string
+    greenCustomStyle: string | null
+    adultConfirmedAt: Date | null
+    chatTermsAcceptedAt: Date | null
+    healthProcessingConsentAt: Date | null
+    healthStorageConsentAt: Date | null
     updatedAt: Date
   }, ExtArgs["result"]["userSettings"]>
   composites: {}
@@ -918,6 +1104,12 @@ export interface UserSettingsFieldRefs {
   readonly dietaryProfile: Prisma.FieldRef<"UserSettings", 'String'>
   readonly goal: Prisma.FieldRef<"UserSettings", 'String'>
   readonly feasibilityTags: Prisma.FieldRef<"UserSettings", 'FeasibilityTag[]'>
+  readonly greenStyle: Prisma.FieldRef<"UserSettings", 'String'>
+  readonly greenCustomStyle: Prisma.FieldRef<"UserSettings", 'String'>
+  readonly adultConfirmedAt: Prisma.FieldRef<"UserSettings", 'DateTime'>
+  readonly chatTermsAcceptedAt: Prisma.FieldRef<"UserSettings", 'DateTime'>
+  readonly healthProcessingConsentAt: Prisma.FieldRef<"UserSettings", 'DateTime'>
+  readonly healthStorageConsentAt: Prisma.FieldRef<"UserSettings", 'DateTime'>
   readonly updatedAt: Prisma.FieldRef<"UserSettings", 'DateTime'>
 }
     

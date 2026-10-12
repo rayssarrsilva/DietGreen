@@ -60,7 +60,14 @@ export const ModelName = {
   Goal: 'Goal',
   Food: 'Food',
   FoodSubstitution: 'FoodSubstitution',
-  MealPlan: 'MealPlan'
+  MealPlan: 'MealPlan',
+  GreenAccount: 'GreenAccount',
+  ChatMessage: 'ChatMessage',
+  UsageEvent: 'UsageEvent',
+  LabResult: 'LabResult',
+  Payment: 'Payment',
+  ExchangeRate: 'ExchangeRate',
+  AccessLog: 'AccessLog'
 } as const
 
 export type ModelName = (typeof ModelName)[keyof typeof ModelName]
@@ -134,6 +141,12 @@ export const UserSettingsScalarFieldEnum = {
   dietaryProfile: 'dietaryProfile',
   goal: 'goal',
   feasibilityTags: 'feasibilityTags',
+  greenStyle: 'greenStyle',
+  greenCustomStyle: 'greenCustomStyle',
+  adultConfirmedAt: 'adultConfirmedAt',
+  chatTermsAcceptedAt: 'chatTermsAcceptedAt',
+  healthProcessingConsentAt: 'healthProcessingConsentAt',
+  healthStorageConsentAt: 'healthStorageConsentAt',
   updatedAt: 'updatedAt'
 } as const
 
@@ -227,6 +240,110 @@ export const MealPlanScalarFieldEnum = {
 } as const
 
 export type MealPlanScalarFieldEnum = (typeof MealPlanScalarFieldEnum)[keyof typeof MealPlanScalarFieldEnum]
+
+
+export const GreenAccountScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  chatBalanceBrl: 'chatBalanceBrl',
+  attachmentBalanceBrl: 'attachmentBalanceBrl',
+  chatCapacityBrl: 'chatCapacityBrl',
+  attachmentCapacityBrl: 'attachmentCapacityBrl',
+  premiumUntil: 'premiumUntil',
+  trialMessagesUsed: 'trialMessagesUsed',
+  trialLastMessageAt: 'trialLastMessageAt',
+  trialClosed: 'trialClosed',
+  createdAt: 'createdAt',
+  updatedAt: 'updatedAt'
+} as const
+
+export type GreenAccountScalarFieldEnum = (typeof GreenAccountScalarFieldEnum)[keyof typeof GreenAccountScalarFieldEnum]
+
+
+export const ChatMessageScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  role: 'role',
+  encryptedContent: 'encryptedContent',
+  createdAt: 'createdAt'
+} as const
+
+export type ChatMessageScalarFieldEnum = (typeof ChatMessageScalarFieldEnum)[keyof typeof ChatMessageScalarFieldEnum]
+
+
+export const UsageEventScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  kind: 'kind',
+  model: 'model',
+  inputTokens: 'inputTokens',
+  outputTokens: 'outputTokens',
+  cacheWriteTokens: 'cacheWriteTokens',
+  cacheReadTokens: 'cacheReadTokens',
+  apiCalls: 'apiCalls',
+  costUsd: 'costUsd',
+  costBrl: 'costBrl',
+  usdBrlRate: 'usdBrlRate',
+  createdAt: 'createdAt'
+} as const
+
+export type UsageEventScalarFieldEnum = (typeof UsageEventScalarFieldEnum)[keyof typeof UsageEventScalarFieldEnum]
+
+
+export const LabResultScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  encryptedPayload: 'encryptedPayload',
+  createdAt: 'createdAt'
+} as const
+
+export type LabResultScalarFieldEnum = (typeof LabResultScalarFieldEnum)[keyof typeof LabResultScalarFieldEnum]
+
+
+export const PaymentScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  kind: 'kind',
+  status: 'status',
+  providerPaymentId: 'providerPaymentId',
+  amountBrl: 'amountBrl',
+  feeBrl: 'feeBrl',
+  marginBrl: 'marginBrl',
+  chatCreditBrl: 'chatCreditBrl',
+  attachmentCreditBrl: 'attachmentCreditBrl',
+  messagesQty: 'messagesQty',
+  attachmentsQty: 'attachmentsQty',
+  premiumDays: 'premiumDays',
+  refundedAmountBrl: 'refundedAmountBrl',
+  quote: 'quote',
+  createdAt: 'createdAt',
+  approvedAt: 'approvedAt',
+  refundedAt: 'refundedAt'
+} as const
+
+export type PaymentScalarFieldEnum = (typeof PaymentScalarFieldEnum)[keyof typeof PaymentScalarFieldEnum]
+
+
+export const ExchangeRateScalarFieldEnum = {
+  id: 'id',
+  day: 'day',
+  usdBrl: 'usdBrl',
+  source: 'source',
+  createdAt: 'createdAt'
+} as const
+
+export type ExchangeRateScalarFieldEnum = (typeof ExchangeRateScalarFieldEnum)[keyof typeof ExchangeRateScalarFieldEnum]
+
+
+export const AccessLogScalarFieldEnum = {
+  id: 'id',
+  userId: 'userId',
+  ip: 'ip',
+  route: 'route',
+  createdAt: 'createdAt'
+} as const
+
+export type AccessLogScalarFieldEnum = (typeof AccessLogScalarFieldEnum)[keyof typeof AccessLogScalarFieldEnum]
 
 
 export const SortOrder = {

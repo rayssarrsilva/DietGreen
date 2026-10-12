@@ -91,3 +91,38 @@ export type FoodSubstitution = Prisma.FoodSubstitutionModel
  * 
  */
 export type MealPlan = Prisma.MealPlanModel
+/**
+ * Model GreenAccount
+ * 
+ */
+export type GreenAccount = Prisma.GreenAccountModel
+/**
+ * Model ChatMessage
+ * 
+ */
+export type ChatMessage = Prisma.ChatMessageModel
+/**
+ * Model UsageEvent
+ * 
+ */
+export type UsageEvent = Prisma.UsageEventModel
+/**
+ * Model LabResult
+ * 
+ */
+export type LabResult = Prisma.LabResultModel
+/**
+ * Model Payment
+ * 
+ */
+export type Payment = Prisma.PaymentModel
+/**
+ * Model ExchangeRate
+ * 
+ */
+export type ExchangeRate = Prisma.ExchangeRateModel
+/**
+ * Model AccessLog
+ * 
+ */
+export type AccessLog = Prisma.AccessLogModel
