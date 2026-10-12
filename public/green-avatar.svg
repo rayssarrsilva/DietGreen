@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" role="img" aria-label="Green, the DietGreen nutrition AI">
+  <defs>
+    <clipPath id="g-clip"><circle cx="100" cy="100" r="100"/></clipPath>
+    <linearGradient id="g-hair" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#f3dc8e"/>
+      <stop offset="0.55" stop-color="#e2bd5c"/>
+      <stop offset="1" stop-color="#b98f35"/>
+    </linearGradient>
+    <linearGradient id="g-coat" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#e9ece4"/>
+    </linearGradient>
+  </defs>
+  <g clip-path="url(#g-clip)">
+    <rect width="200" height="200" fill="#dfe7d6"/>
+    <path d="M0 200 L0 150 Q40 128 66 150 Z" fill="#c8d6bd"/>
+    <path d="M200 200 L200 138 Q168 126 140 152 Z" fill="#c8d6bd"/>
+
+    <path d="M64 58 Q60 30 98 24 Q140 22 142 62 L146 120 Q147 134 132 136 L118 132 L82 118 L70 112 Z" fill="#b98f35"/>
+
+    <path d="M89 116 L111 116 L113 150 L87 150 Z" fill="#e9b996"/>
+    <path d="M89 128 Q100 136 111 128 L111 116 L89 116 Z" fill="#d9a684"/>
+
+    <path d="M22 200 Q30 166 62 156 L88 148 L100 164 L112 148 L138 156 Q170 166 178 200 Z" fill="url(#g-coat)" stroke="#cfd5c6" stroke-width="1"/>
+    <path d="M88 148 L100 164 L112 148 L108 146 L100 156 L92 146 Z" fill="#2f5233"/>
+    <path d="M100 164 L84 150 L66 160 L82 200 L98 200 Z" fill="#f4f6f0" stroke="#cfd5c6" stroke-width="1"/>
+    <path d="M100 164 L116 150 L134 160 L118 200 L102 200 Z" fill="#f4f6f0" stroke="#cfd5c6" stroke-width="1"/>
+    <path d="M70 178 L78 176" stroke="#cfd5c6" stroke-width="1.2" stroke-linecap="round"/>
+
+    <g transform="translate(121 176) rotate(-6)">
+      <rect width="36" height="11" rx="2" fill="#2f5233"/>
+      <circle cx="5.5" cy="5.5" r="2.6" fill="#9fd3a3"/>
+      <text x="10" y="7.6" font-family="Helvetica, Arial, sans-serif" font-size="4.6" font-weight="700" fill="#f4f6f0" opacity="0.85" letter-spacing="0.2">GREEN IA</text>
+    </g>
+
+    <ellipse cx="72" cy="94" rx="5" ry="8" fill="#e9b996"/>
+    <path d="M70 100 L74 112 L66 112 Z" fill="#3e8a4a"/>
+    <circle cx="72" cy="101" r="1.4" fill="#f3dc8e"/>
+
+    <ellipse cx="101" cy="86" rx="28" ry="34" fill="#f2c9a8"/>
+
+    <path d="M76 66 Q86 50 104 50 Q124 50 128 70 Q118 60 102 60 Q88 62 80 76 Z" fill="#e2bd5c"/>
+
+    <path d="M77 78 Q83 68 93 74" stroke="#7a5a26" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+    <path d="M108 77 Q116 72 124 76" stroke="#7a5a26" stroke-width="2.4" fill="none" stroke-linecap="round"/>
+
+    <path d="M80 86 Q86 82 92 86 Q86 89 80 86 Z" fill="#ffffff"/>
+    <circle cx="86.5" cy="86" r="2.6" fill="#3b5a3e"/>
+    <path d="M79 85.5 Q86 81 93 86 L96 84" stroke="#1d2a1f" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+    <path d="M109 86 Q115 82 121 86 Q115 89 109 86 Z" fill="#ffffff"/>
+    <circle cx="115.5" cy="86" r="2.6" fill="#3b5a3e"/>
+    <path d="M108 86 Q115 81 122 85.5 L125 83.5" stroke="#1d2a1f" stroke-width="1.4" fill="none" stroke-linecap="round"/>
+
+    <path d="M101 88 Q99 98 97 101 Q100 103 104 101.5" stroke="#d29a7a" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+    <ellipse cx="84" cy="98" rx="5" ry="2.6" fill="#ec9f8c" opacity="0.35"/>
+    <ellipse cx="119" cy="98" rx="5" ry="2.6" fill="#ec9f8c" opacity="0.35"/>
+
+    <path d="M90 108 Q100 112 112 106 Q108 111 100 112.5 Q93 112 90 108 Z" fill="#8e3b46"/>
+    <path d="M90 108 Q99 109.5 112 106" stroke="#6d2633" stroke-width="1" fill="none" stroke-linecap="round"/>
+
+    <path d="M70 72 Q66 40 100 36 Q138 34 140 70 L142 112 Q142 128 131 132 Q136 116 132 96 Q130 76 120 64 Q104 56 88 64 Q80 70 76 84 L74 98 Q68 92 70 72 Z" fill="url(#g-hair)"/>
+    <path d="M76 62 Q96 40 128 52 Q112 50 98 58 Q86 66 82 80 Q76 72 76 62 Z" fill="#f3dc8e"/>
+    <path d="M84 52 Q100 42 120 46" stroke="#fbeec0" stroke-width="2" fill="none" stroke-linecap="round" opacity="0.8"/>
+    <path d="M132 80 Q138 100 134 124" stroke="#a37c2c" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.7"/>
+    <path d="M126 70 Q134 92 128 128" stroke="#f3dc8e" stroke-width="1.6" fill="none" stroke-linecap="round" opacity="0.8"/>
+    <path d="M118 120 Q128 132 140 128" stroke="#b98f35" stroke-width="2" fill="none" stroke-linecap="round"/>
+    <path d="M131 96 Q134 112 130 127 L134 129 Q138 113 134 96 Z" fill="#4f9a5a" opacity="0.8"/>
+  </g>
+</svg>
