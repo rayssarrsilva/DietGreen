@@ -25,6 +25,13 @@ model User {
   plans    MealPlan[]
   settings UserSettings?
 
+  greenAccount  GreenAccount?
+  chatMessages  ChatMessage[]
+  usageEvents   UsageEvent[]
+  labResults    LabResult[]
+  payments      Payment[]
+  accessLogs    AccessLog[]
+
   createdAt DateTime @default(now())
 }
 
@@ -71,6 +78,14 @@ model UserSettings {
   dietaryProfile  String?
   goal            String?
   feasibilityTags FeasibilityTag[]
+
+  greenStyle        String    @default("direct")
+  greenCustomStyle  String?
+  adultConfirmedAt  DateTime?
+  chatTermsAcceptedAt DateTime?
+  healthProcessingConsentAt DateTime?
+  healthStorageConsentAt    DateTime?
+
   updatedAt       DateTime @updatedAt
 }
 
@@ -185,4 +200,126 @@ model MealPlan {
   generatedPlan     Json
   createdAt         DateTime       @default(now())
   updatedAt         DateTime       @updatedAt
+}
+// ---------- Green (AI chat), wallet and billing ----------
+
+enum UsageKind {
+  TRIAL
+  CHAT
+  ATTACHMENT
+}
+
+enum PaymentKind {
+  PREMIUM
+  CREDITS
+}
+
+enum PaymentStatus {
+  PENDING
+  APPROVED
+  REJECTED
+  CANCELLED
+  EXPIRED
+  REFUNDED
+  PARTIALLY_REFUNDED
+}
+
+model GreenAccount {
+  id                      String    @id @default(cuid())
+  userId                  String    @unique
+  user                    User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  chatBalanceBrl          Decimal   @default(0) @db.Decimal(14, 6)
+  attachmentBalanceBrl    Decimal   @default(0) @db.Decimal(14, 6)
+  chatCapacityBrl         Decimal   @default(0) @db.Decimal(14, 6)
+  attachmentCapacityBrl   Decimal   @default(0) @db.Decimal(14, 6)
+  premiumUntil            DateTime?
+  trialMessagesUsed       Int       @default(0)
+  trialLastMessageAt      DateTime?
+  trialClosed             Boolean   @default(false)
+  createdAt               DateTime  @default(now())
+  updatedAt               DateTime  @updatedAt
+}
+
+model ChatMessage {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  role             String
+  encryptedContent String   @db.Text
+  createdAt        DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model UsageEvent {
+  id               String    @id @default(cuid())
+  userId           String
+  user             User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  kind             UsageKind
+  model            String
+  inputTokens      Int
+  outputTokens     Int
+  cacheWriteTokens Int       @default(0)
+  cacheReadTokens  Int       @default(0)
+  apiCalls         Int       @default(1)
+  costUsd          Decimal   @db.Decimal(14, 8)
+  costBrl          Decimal   @db.Decimal(14, 6)
+  usdBrlRate       Decimal   @db.Decimal(10, 4)
+  createdAt        DateTime  @default(now())
+
+  @@index([userId, createdAt])
+  @@index([kind, createdAt])
+}
+
+model LabResult {
+  id               String   @id @default(cuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  encryptedPayload String   @db.Text
+  createdAt        DateTime @default(now())
+
+  @@index([userId, createdAt])
+}
+
+model Payment {
+  id                     String        @id @default(cuid())
+  userId                 String?
+  user                   User?         @relation(fields: [userId], references: [id], onDelete: SetNull)
+  kind                   PaymentKind
+  status                 PaymentStatus @default(PENDING)
+  providerPaymentId      String?       @unique
+  amountBrl              Decimal       @db.Decimal(12, 2)
+  feeBrl                 Decimal       @db.Decimal(12, 4)
+  marginBrl              Decimal       @db.Decimal(12, 4)
+  chatCreditBrl          Decimal       @default(0) @db.Decimal(14, 6)
+  attachmentCreditBrl    Decimal       @default(0) @db.Decimal(14, 6)
+  messagesQty            Int           @default(0)
+  attachmentsQty         Int           @default(0)
+  premiumDays            Int           @default(0)
+  refundedAmountBrl      Decimal       @default(0) @db.Decimal(12, 2)
+  quote                  Json
+  createdAt              DateTime      @default(now())
+  approvedAt             DateTime?
+  refundedAt             DateTime?
+
+  @@index([userId, createdAt])
+}
+
+model ExchangeRate {
+  id        String   @id @default(cuid())
+  day       String   @unique
+  usdBrl    Decimal  @db.Decimal(10, 4)
+  source    String
+  createdAt DateTime @default(now())
+}
+
+model AccessLog {
+  id        String   @id @default(cuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  ip        String
+  route     String
+  createdAt DateTime @default(now())
+
+  @@index([createdAt])
 }
