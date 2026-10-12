@@ -25,3 +25,21 @@ services:
         sync: false
       - key: AUTH_GITHUB_SECRET
         sync: false
+      - key: ANTHROPIC_API_KEY
+        sync: false
+      - key: DATA_ENCRYPTION_KEY
+        sync: false
+      - key: MERCADO_PAGO_ACCESS_TOKEN
+        sync: false
+      - key: MERCADO_PAGO_WEBHOOK_SECRET
+        sync: false
+      - key: SELLER_NAME
+        sync: false
+      - key: SELLER_DOCUMENT
+        sync: false
+      - key: SELLER_EMAIL
+        sync: false
+      - key: SELLER_ADDRESS
+        sync: false
+      - key: FREE_MONTHLY_BUDGET_BRL
+        value: "10"
